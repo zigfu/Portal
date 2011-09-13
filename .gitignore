@@ -1,0 +1,12 @@
+
+Library/ScriptAssemblies
+Library/previews
+obj
+Temp
+*.csproj
+
+*.unityproj
+*.pidb
+
+*.sln
+*.suo
