@@ -47,9 +47,11 @@ public class ZigItem : MonoBehaviour {
 				print(req.progress); // visualize
 			}
 			yield return req; // just to be sure
-			File.WriteAllBytes(".\\temp.crap", req.bytes);
+			string filename = System.IO.Path.GetFullPath(System.IO.Path.GetFileName(zigUri));
+			File.WriteAllBytes(filename, req.bytes);
 			print("Installing zig...");
-			installedZig = ZigLib.ZigLib.InstallZig(".\\temp.crap");
+			installedZig = ZigLib.ZigLib.InstallZig(filename);
+			System.IO.File.Delete(filename);
 		}
 		print("Launching zig...");
 		installedZig.Launch();
