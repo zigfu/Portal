@@ -6,7 +6,7 @@ public class ZigsFeed : MonoBehaviour {
 	public ScrollingMenu menu;
 	public ZigItem ZigMenuItem;
 	public bool Remote = false;
-	public string RemoteZigsUrl = "http://django.zigfu.com:8888/everyzig/";
+	public string RemoteZigsUrl = "http://django.zigfu.com/django/everyzig/";
 
 	// Use this for initialization
 	void Start () {

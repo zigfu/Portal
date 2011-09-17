@@ -2,12 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class ThumbnailItem : MonoBehaviour {
-	
-	public Texture defaultTexture;
-	public Texture highlightTexture;
-	
-	public string Title;
-	public string Description;
+	public MainMenuEntry mme;
 	
 	Renderer target;
 	
