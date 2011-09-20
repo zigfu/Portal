@@ -68,11 +68,12 @@ public class ItemSelector : MonoBehaviour {
 		}
 	}
 	
-	void FixedUpdate()
+	//void FixedUpdate()
+	void Hand_Update(Vector3 pos)
 	{
-        if (SessionManager.InSession) {
+        //if (SessionManager.InSession) {
             UpdateSelector(fader.value);
-        }
+        //}
 	}
 
     // scrolling logic

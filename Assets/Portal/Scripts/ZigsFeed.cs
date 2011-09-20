@@ -6,17 +6,21 @@ public class ZigsFeed : MonoBehaviour {
 	public ScrollingMenu menu;
 	public ZigItem ZigMenuItem;
 	public bool Remote = false;
-	public string RemoteZigsUrl = "http://django.zigfu.com/django/everyzig/";
 
 	// Use this for initialization
 	void Start () {
 		if (!menu) {
 			menu = GetComponent<ScrollingMenu>();
 		}
-
+		
+		Load();
+	}
+	
+	void Load()
+	{
 		// init a menu item for each zig (for great justice)
 		if (Remote) {
-			StartCoroutine(LoadRemoteZigs(RemoteZigsUrl));
+			StartCoroutine(LoadRemoteZigs(ZigLib.ZigLib.GetRemoteZigsQuery()));
 		} else {
 			foreach (InstalledZig zig in ZigLib.ZigLib.EnumerateInstalledZigs()) {
 				ZigItem zi = InitZig();
@@ -42,5 +46,18 @@ public class ZigsFeed : MonoBehaviour {
 		newZig.transform.localRotation = Quaternion.identity;
 		menu.Add(newZig.transform);
 		return newZig;
+	}
+	
+	public void ReloadZigs()
+	{
+		menu.Clear();
+		Load();
+	}
+	
+	void OnGUI()
+	{
+		if (Event.current.Equals(Event.KeyboardEvent("f5"))) {
+			ReloadZigs();
+		}
 	}
 }

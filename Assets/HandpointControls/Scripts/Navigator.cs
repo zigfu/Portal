@@ -63,7 +63,7 @@ public class Navigator : MonoBehaviour {
 	
 	void Start()
 	{
-// make sure we get hand points
+		// make sure we get hand points
 		if (null == GetComponent<HandPointControl>())
 		{
 			gameObject.AddComponent<HandPointControl>();
