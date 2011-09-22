@@ -11,30 +11,30 @@ public class ZigItem : MonoBehaviour {
 	string zigUri;
 	bool installing;
 	
-	public void Init(ZigMetadata md)
+	public void Init(IZig zig)
 	{
+		SharedMetadata md = zig.Metadata;
 		transform.Find("NameLabel").GetComponent<TextMesh>().text = md.Name;
 		transform.Find("DeveloperLabel").GetComponent<TextMesh>().text = md.Developer;
 		transform.Find("DescriptionLabel").GetComponent<TextMesh>().text = md.Description;
-		StartCoroutine(LoadThumbnail(md.ThumbnailURI));
+		transform.Find("ActionLabel").GetComponent<TextMesh>().text = (null == installedZig) ? "INSTALL" : "LAUNCH";
 	}
 	
 	public void InitRemote(RemoteZig zig)
 	{
-		Init(zig.Metadata);
-		IZig iz = zig;
-		if (ZigLib.ZigLib.IsZigInstalled(iz)) {
-			// TODO handle installed zig
-			// FUTURE TODO handle "Update" functionality if local & remote versions differ
+		if (ZigLib.ZigLib.IsZigInstalled(zig as IZig)) {
+			installedZig = ZigLib.ZigLib.GetInstalledZig(zig);
 		}
-		
+		Init(zig);
 		zigUri = zig.RemoteURI;
+		StartCoroutine(LoadThumbnail(zig.ThumbnailURI));
 	}
 	
 	public void InitInstalled(InstalledZig zig)
 	{
-		Init(zig.Metadata);
 		installedZig = zig;
+		Init(zig);
+		StartCoroutine(LoadThumbnail(zig.ThumbnailURI));
 	}
 	
 	IEnumerator LoadThumbnail(string uri)
@@ -68,9 +68,17 @@ public class ZigItem : MonoBehaviour {
 		print("Installing zig...");
 		installedZig = ZigLib.ZigLib.InstallZig(filename);
 		File.Delete(filename);
-				
+			
+		// handle the fresh installation
+		transform.Find("ActionLabel").GetComponent<TextMesh>().text = "LAUNCH";
+		foreach (ZigsFeed feed in FindObjectsOfType(typeof(ZigsFeed))) {
+			if (!feed.Remote) {
+				feed.ReloadZigs();
+			}
+		}
+		
 		// tell someone to do something about this (make sure there is a receiver)
-		SendMessageUpwards("Zig_Installed", installedZig, SendMessageOptions.RequireReceiver);
+		//SendMessageUpwards("Zig_Installed", installedZig, SendMessageOptions.RequireReceiver);
 	}
 	
 	IEnumerator Launch()
