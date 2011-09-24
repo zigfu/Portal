@@ -40,14 +40,14 @@ public class FocusedControlVisualizer : MonoBehaviour {
 		if (HorizontalIndicator) {
 			frameSize.y -= IndicatorSize;
 			frameCenter.y += IndicatorSize / 2;
-			horizCenter = new Vector3(-0.5f * IndicatorSize, -0.5f * (Size.y - IndicatorSize), 0);
-			horizSize = new Vector3(Size.x - IndicatorSize, IndicatorSize, 0);
+			horizCenter = new Vector3((VerticalIndicator) ? -0.5f * IndicatorSize : 0, -0.5f * (Size.y - IndicatorSize), 0);
+			horizSize = new Vector3((VerticalIndicator) ? Size.x - IndicatorSize : Size.x, IndicatorSize, 0);
 		}
 		if (VerticalIndicator) {
 			frameSize.x -= IndicatorSize;
 			frameCenter.x -= IndicatorSize / 2;
-			vertCenter = new Vector3(0.5f * (Size.x - IndicatorSize), 0.5f * IndicatorSize, 0);
-			vertSize = new Vector3(IndicatorSize, Size.y - IndicatorSize, 0);
+			vertCenter = new Vector3(0.5f * (Size.x - IndicatorSize), (HorizontalIndicator) ? 0.5f * IndicatorSize : 0, 0);
+			vertSize = new Vector3(IndicatorSize, (HorizontalIndicator) ? Size.y - IndicatorSize : Size.y, 0);
 		}
 	}
 	
@@ -58,7 +58,7 @@ public class FocusedControlVisualizer : MonoBehaviour {
 			frame.Size = frameSize;
 		}
 		
-		if (HorizontalIndicator && indicatorBackground && indicatorNub)
+		if (HorizontalIndicator && indicatorBackground)
 		{
 			indicatorBackground.transform.position = transform.TransformPoint(horizCenter);
 			indicatorBackground.Size = horizSize;
