@@ -23,6 +23,8 @@ public class NineSegment : MonoBehaviour {
 
         GetComponent<MeshFilter>().mesh = data;
         renderer.material.mainTexture = Texture;
+		//TODO: hack
+		renderer.material.shader = Shader.Find("Transparent/Diffuse");
 	}
 
     private void GenerateIndices()
