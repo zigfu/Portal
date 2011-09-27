@@ -6,7 +6,7 @@ using System.Collections;
 [ExecuteInEditMode]
 public class NineSegment : MonoBehaviour {
 
-    public Texture2D Texture;
+    public Material SourceMaterial;
     public int[] BorderSizes = new int[4]; // left, top, right, bottom
     public Vector2 Size = new Vector2(1,1);
     Transform TopLeft, TopRight, TopCenter;
@@ -23,10 +23,10 @@ public class NineSegment : MonoBehaviour {
         data.RecalculateNormals();
 
         GetComponent<MeshFilter>().mesh = data;
-        renderer.sharedMaterial.mainTexture = Texture;
 		//TODO: hack
-		renderer.material.shader = Shader.Find("Transparent/Diffuse");
-        Texture.wrapMode = TextureWrapMode.Clamp;
+        SourceMaterial.shader = Shader.Find("Transparent/Diffuse");
+        SourceMaterial.mainTexture.wrapMode = TextureWrapMode.Clamp;
+        renderer.sharedMaterial = SourceMaterial;
 	}
 
     private void GenerateIndices()
@@ -49,8 +49,8 @@ public class NineSegment : MonoBehaviour {
 
     private void GenerateUVs()
     {
-        int width = Texture.width;
-        int height = Texture.height;
+        int width = SourceMaterial.mainTexture.width;
+        int height = SourceMaterial.mainTexture.height;
 
         float[] borderRatios = new float[] {
             ((float)BorderSizes[0]) / width, // left
@@ -89,8 +89,8 @@ public class NineSegment : MonoBehaviour {
 
     private void GenerateVertices()
     {
-        int width = Texture.width;
-        int height = Texture.height;
+        int width = SourceMaterial.mainTexture.width;
+        int height = SourceMaterial.mainTexture.height;
 
         float[] borderRatios = new float[] {
             ((float)BorderSizes[0]) / width, // left
