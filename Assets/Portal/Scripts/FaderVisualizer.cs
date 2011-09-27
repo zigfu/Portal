@@ -10,12 +10,18 @@ public class FaderVisualizer : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		if (null != background) background.Size = Size;
+		if (null != background) {
+			background.Size = Size;
+			background.DoUpdate();
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (null != background) background.Size = Size;
+		if (null != background && background.Size != Size) {
+			background.Size = Size;
+			background.DoUpdate();
+		}
 		
 		if (!target || !Nub) return;
 		Vector3 targetPos = transform.TransformPoint(new Vector3((target.value - 0.5f) * (Size.x - (Nub.Size.x)), 0, 0f));

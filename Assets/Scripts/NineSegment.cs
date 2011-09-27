@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
 public class NineSegment : MonoBehaviour {
-
+	public bool UpdateEveryFrame = false;
     public Material SourceMaterial;
     public int[] BorderSizes = new int[4]; // left, top, right, bottom
     public Vector2 Size = new Vector2(1,1);
@@ -83,10 +83,18 @@ public class NineSegment : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        GenerateVertices(); // update in case sizes were changed in runtime
-        GenerateUVs(); // TODO: only in editor mode
+		if (UpdateEveryFrame) {
+			DoUpdate();
+		}
 	}
-
+	
+	public void DoUpdate()
+	{
+		if (null == data) return;
+	    GenerateVertices(); // update in case sizes were changed in runtime
+	    GenerateUVs(); // TODO: only in editor mode
+	}
+	
     private void GenerateVertices()
     {
         int width = SourceMaterial.mainTexture.width;

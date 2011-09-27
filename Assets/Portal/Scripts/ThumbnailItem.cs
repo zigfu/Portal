@@ -18,11 +18,11 @@ public class ThumbnailItem : MonoBehaviour {
 	
 	void MenuItem_Highlight()
 	{
-		//target.material.mainTexture = highlightTexture;
+		target.material = mme.iconSelected;
 	}
 	
 	void MenuItem_Unhighlight()
 	{
-		//target.material.mainTexture = defaultTexture;
+		target.material = mme.iconDefault;
 	}
 }

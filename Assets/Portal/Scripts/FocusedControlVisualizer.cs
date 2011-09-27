@@ -83,7 +83,10 @@ public class FocusedControlVisualizer : MonoBehaviour {
 	
 	void CalcSizes()
 	{
-		if (null != frame) frame.Size = Size;
+		if (null != frame && frame.Size != Size) {
+			frame.Size = Size;
+			frame.DoUpdate();
+		}
 		
 		top = new Vector3(0, 0.5f * Size.y, 0);
 		bottom = new Vector3(0, -0.5f * Size.y, 0);
@@ -120,7 +123,9 @@ public class FocusedControlVisualizer : MonoBehaviour {
 		if (null == visualizer) return;
 		
 		visualizer.transform.localPosition = localPos;
-		visualizer.Size = size;
+		if (visualizer.Size != Size) {
+			visualizer.Size = size;
+		}
 	}
 	
 	void OnDrawGizmos()

@@ -7,4 +7,7 @@ public class MainMenuEntry : MonoBehaviour {
 	
 	public bool NavigateOnSelect = false;
 	public Transform NavigationTarget;
+	
+	public Material iconDefault;
+	public Material iconSelected;
 }
