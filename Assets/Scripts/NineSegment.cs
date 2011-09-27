@@ -25,6 +25,7 @@ public class NineSegment : MonoBehaviour {
         renderer.material.mainTexture = Texture;
 		//TODO: hack
 		renderer.material.shader = Shader.Find("Transparent/Diffuse");
+        Texture.wrapMode = TextureWrapMode.Clamp;
 	}
 
     private void GenerateIndices()
