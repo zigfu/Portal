@@ -23,7 +23,7 @@ public class FaderVisualizer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!target || !Nub) return;
-		Vector3 delta = new Vector3((target.value - 0.5f) * Size.x, 0, 0);
+		Vector3 delta = new Vector3((target.value - 0.5f) * (Size.x - (Nub.Size.x / 2)), 0, 0);
 		Nub.transform.position = Vector3.Lerp(Nub.transform.position, background.transform.position + delta, Time.deltaTime * NubSpeed);
 	}
 	
