@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-[ExecuteInEditMode]
 public class FocusedControlVisualizer : MonoBehaviour {
 	
 	public Vector2 Size;
@@ -61,12 +60,31 @@ public class FocusedControlVisualizer : MonoBehaviour {
 	
 	void Update()
 	{
+		EnableAndDisableComponents();
 		CalcSizes();
 		UpdatePositions();
 	}
 	
+	void EnableAndDisableComponents()
+	{
+		if (null != scrollIndicatorLeft && ShowIndicatorLeft != scrollIndicatorLeft.gameObject.active) {
+			scrollIndicatorLeft.gameObject.SetActiveRecursively(ShowIndicatorLeft);
+		}
+		if (null != scrollIndicatorRight && ShowIndicatorRight != scrollIndicatorRight.gameObject.active) {
+			scrollIndicatorRight.gameObject.SetActiveRecursively(ShowIndicatorRight);
+		}
+		if (null != scrollIndicatorTop && ShowIndicatorTop != scrollIndicatorTop.gameObject.active) {
+			scrollIndicatorTop.gameObject.SetActiveRecursively(ShowIndicatorTop);
+		}
+		if (null != scrollIndicatorBottom && ShowIndicatorBottom != scrollIndicatorBottom.gameObject.active) {
+			scrollIndicatorBottom.gameObject.SetActiveRecursively(ShowIndicatorBottom);
+		}
+	}
+	
 	void CalcSizes()
 	{
+		if (null != frame) frame.Size = Size;
+		
 		top = new Vector3(0, 0.5f * Size.y, 0);
 		bottom = new Vector3(0, -0.5f * Size.y, 0);
 		left = new Vector3(-0.5f * Size.x, 0, 0);
@@ -82,12 +100,11 @@ public class FocusedControlVisualizer : MonoBehaviour {
 		
 		UpdateScrollIndicator(scrollIndicatorLeft, 
 		                      left + new Vector3(-scrollIndicatorOffset,0,0), 
-		                      new Vector2(scrollIndicatorWidth, Size.y));
-		
+		                      new Vector2(Size.y, scrollIndicatorWidth));
 		
 		UpdateScrollIndicator(scrollIndicatorRight, 
 		                      right + new Vector3(scrollIndicatorOffset,0,0),
-		                      new Vector2(scrollIndicatorWidth, Size.y));
+		                      new Vector2(Size.y, scrollIndicatorWidth));
 		
 		UpdateScrollIndicator(scrollIndicatorTop, 
 		                      top + new Vector3(0,scrollIndicatorOffset,0),

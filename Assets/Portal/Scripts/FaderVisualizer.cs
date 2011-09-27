@@ -10,26 +10,34 @@ public class FaderVisualizer : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
-		//GameObject go = GameObject.CreatePrimitive(PrimitiveType.Plane);
-		//go.transform.parent = transform;
-		//go.transform.localScale = new Vector3(.1f * Size.x, .1f, Size.y * .1f);
-		//go.transform.localPosition = Vector3.zero;
-		//go.transform.localRotation = Quaternion.Euler(270, 0, 0);
-		
-		background.Size = Size;
+		if (null != background) background.Size = Size;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (null != background) background.Size = Size;
+		
 		if (!target || !Nub) return;
-		Vector3 delta = new Vector3((target.value - 0.5f) * (Size.x - (Nub.Size.x / 2)), 0, 0);
-		Nub.transform.position = Vector3.Lerp(Nub.transform.position, background.transform.position + delta, Time.deltaTime * NubSpeed);
+		Vector3 targetPos = transform.TransformPoint(new Vector3((target.value - 0.5f) * (Size.x - (Nub.Size.x)), 0, 0f));
+		Nub.transform.position = Vector3.Lerp(Nub.transform.position, targetPos, Time.deltaTime * NubSpeed);
 	}
 	
 	void OnDrawGizmos()
 	{
 		Gizmos.color = Color.blue;
-		Gizmos.DrawWireCube(gameObject.transform.position, new Vector3(Size.x, Size.y, 0.01f));
+		DrawBox(Vector3.zero, new Vector3(Size.x, Size.y, 0f));
+	}
+	
+	// ignores z for size
+	void DrawBox(Vector3 center, Vector3 size)
+	{
+		Vector3 p1 = transform.TransformPoint(center + (Vector3.Scale(size, new Vector3(-0.5f, -0.5f, 1f))));
+		Vector3 p2 = transform.TransformPoint(center + (Vector3.Scale(size, new Vector3(0.5f, -0.5f, 1f))));
+		Vector3 p3 = transform.TransformPoint(center + (Vector3.Scale(size, new Vector3(0.5f, 0.5f, 1f))));
+		Vector3 p4 = transform.TransformPoint(center + (Vector3.Scale(size, new Vector3(-0.5f, 0.5f, 1f))));
+		Gizmos.DrawLine(p1, p2);
+		Gizmos.DrawLine(p2, p3);
+		Gizmos.DrawLine(p3, p4);
+		Gizmos.DrawLine(p4, p1);
 	}
 }

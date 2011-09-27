@@ -3,7 +3,6 @@ using System.Collections;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
-[ExecuteInEditMode]
 public class NineSegment : MonoBehaviour {
 
     public Material SourceMaterial;
