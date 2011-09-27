@@ -3,6 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
+[ExecuteInEditMode]
 public class NineSegment : MonoBehaviour {
 
     public Texture2D Texture;
@@ -22,7 +23,7 @@ public class NineSegment : MonoBehaviour {
         data.RecalculateNormals();
 
         GetComponent<MeshFilter>().mesh = data;
-        renderer.material.mainTexture = Texture;
+        renderer.sharedMaterial.mainTexture = Texture;
 		//TODO: hack
 		renderer.material.shader = Shader.Find("Transparent/Diffuse");
         Texture.wrapMode = TextureWrapMode.Clamp;
