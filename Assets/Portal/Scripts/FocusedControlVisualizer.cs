@@ -1,27 +1,60 @@
 using UnityEngine;
 using System.Collections;
 
+[ExecuteInEditMode]
 public class FocusedControlVisualizer : MonoBehaviour {
 	
 	public Vector2 Size;
+
 	public float IndicatorSize;
-	public ScrollingMenu target;
 	public bool HorizontalIndicator;
 	public bool VerticalIndicator;
 	
 	public NineSegment frame;
-	public NineSegment indicatorBackground;
-	public NineSegment indicatorNub;
 	
-	Vector3 frameCenter;
-	Vector3 frameSize;
-	Vector3 vertCenter;
-	Vector3 vertSize;
-	Vector3 horizCenter;
-	Vector3 horizSize;
+	public Vector2 horizontalArrowOffset;
+	public Vector2 verticalArrowOffset;
+	public float scrollIndicatorWidth;
+	public float scrollIndicatorOffset;
+	
+	public bool ShowArrowLeft;
+	public bool ShowArrowRight;
+	public bool ShowArrowTop;
+	public bool ShowArrowBottom;
+	public bool ShowIndicatorLeft;
+	public bool ShowIndicatorRight;
+	public bool ShowIndicatorTop;
+	public bool ShowIndicatorBottom;
+	
+	public VisualizerArrow arrowRight;
+	public VisualizerArrow arrowLeft;
+	public VisualizerArrow arrowUp;
+	public VisualizerArrow arrowDown;
+	
+	public FaderVisualizer scrollIndicatorLeft;
+	public FaderVisualizer scrollIndicatorRight;
+	public FaderVisualizer scrollIndicatorTop;
+	public FaderVisualizer scrollIndicatorBottom;
+
+	Vector3 top;
+	Vector3 left;
+	Vector3 right;
+	Vector3 bottom;
+	
+	public Fader verticalFader;
+	public Fader horizontalFader;
 
 	void Start()
 	{
+		if (null != horizontalFader) {
+			scrollIndicatorTop.target = horizontalFader;
+			scrollIndicatorBottom.target = horizontalFader;			
+		}
+		if (null != verticalFader) {
+			scrollIndicatorLeft.target = verticalFader;
+			scrollIndicatorRight.target = verticalFader;
+		}
+		
 		CalcSizes();
 		UpdatePositions();
 	}
@@ -34,53 +67,50 @@ public class FocusedControlVisualizer : MonoBehaviour {
 	
 	void CalcSizes()
 	{
-		frameSize = Size;
-		frameCenter = Vector3.zero;
-		
-		if (HorizontalIndicator) {
-			frameSize.y -= IndicatorSize;
-			frameCenter.y += IndicatorSize / 2;
-			horizCenter = new Vector3((VerticalIndicator) ? -0.5f * IndicatorSize : 0, -0.5f * (Size.y - IndicatorSize), 0);
-			horizSize = new Vector3((VerticalIndicator) ? Size.x - IndicatorSize : Size.x, IndicatorSize, 0);
-		}
-		if (VerticalIndicator) {
-			frameSize.x -= IndicatorSize;
-			frameCenter.x -= IndicatorSize / 2;
-			vertCenter = new Vector3(0.5f * (Size.x - IndicatorSize), (HorizontalIndicator) ? 0.5f * IndicatorSize : 0, 0);
-			vertSize = new Vector3(IndicatorSize, (HorizontalIndicator) ? Size.y - IndicatorSize : Size.y, 0);
-		}
+		top = new Vector3(0, 0.5f * Size.y, 0);
+		bottom = new Vector3(0, -0.5f * Size.y, 0);
+		left = new Vector3(-0.5f * Size.x, 0, 0);
+		right = new Vector3(0.5f * Size.x, 0, 0);
 	}
 	
 	void UpdatePositions()
 	{
-		if (frame) {
-			frame.transform.position = transform.TransformPoint(frameCenter);
-			frame.Size = frameSize;
-		}
+		//arrowLeft.transform.localPosition = left + new Vector3(-horizontalArrowOffset.x, horizontalArrowOffset.y, 0);
+		//arrowRight.transform.localPosition = right + new Vector3(horizontalArrowOffset.x, horizontalArrowOffset.y, 0);
+		//arrowUp.transform.localPosition = top + new Vector3(verticalArrowOffset.x, -verticalArrowOffset.y, 0);
+		//arrowDown.transform.localPosition = bottom + new Vector3(verticalArrowOffset.x, verticalArrowOffset.y, 0);
 		
-		if (HorizontalIndicator && indicatorBackground)
-		{
-			indicatorBackground.transform.position = transform.TransformPoint(horizCenter);
-			indicatorBackground.Size = horizSize;
-		}
+		UpdateScrollIndicator(scrollIndicatorLeft, 
+		                      left + new Vector3(-scrollIndicatorOffset,0,0), 
+		                      new Vector2(scrollIndicatorWidth, Size.y));
+		
+		
+		UpdateScrollIndicator(scrollIndicatorRight, 
+		                      right + new Vector3(scrollIndicatorOffset,0,0),
+		                      new Vector2(scrollIndicatorWidth, Size.y));
+		
+		UpdateScrollIndicator(scrollIndicatorTop, 
+		                      top + new Vector3(0,scrollIndicatorOffset,0),
+		                      new Vector2(Size.x, scrollIndicatorWidth));
+		
+		UpdateScrollIndicator(scrollIndicatorBottom, 
+		                      bottom + new Vector3(0,-scrollIndicatorOffset,0),
+		                      new Vector2(Size.x, scrollIndicatorWidth));
+	}
+	
+	void UpdateScrollIndicator(FaderVisualizer visualizer, Vector3 localPos, Vector2 size)
+	{
+		if (null == visualizer) return;
+		
+		visualizer.transform.localPosition = localPos;
+		visualizer.Size = size;
 	}
 	
 	void OnDrawGizmos()
 	{
-		CalcSizes();
-		
 		// draw frame gizmo
 		Gizmos.color = Color.yellow;
-		DrawBox(frameCenter, frameSize);
-
-		// draw indicator gizmos
-		Gizmos.color = Color.green;
-		if (HorizontalIndicator) {
-			DrawBox(horizCenter, horizSize);
-		}
-		if (VerticalIndicator) {
-			DrawBox(vertCenter, vertSize);
-		}
+		DrawBox(Vector3.zero, new Vector3(Size.x, Size.y, 0));
 	}
 	
 	// ignores z for size
