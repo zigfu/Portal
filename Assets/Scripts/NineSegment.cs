@@ -85,6 +85,7 @@ public class NineSegment : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         GenerateVertices(); // update in case sizes were changed in runtime
+        GenerateUVs(); // TODO: only in editor mode
 	}
 
     private void GenerateVertices()
