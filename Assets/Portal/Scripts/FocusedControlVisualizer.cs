@@ -79,6 +79,19 @@ public class FocusedControlVisualizer : MonoBehaviour {
 		if (null != scrollIndicatorBottom && ShowIndicatorBottom != scrollIndicatorBottom.gameObject.active) {
 			scrollIndicatorBottom.gameObject.SetActiveRecursively(ShowIndicatorBottom);
 		}
+		
+		if (ShowArrowLeft != arrowLeft.gameObject.active) {
+			arrowLeft.gameObject.SetActiveRecursively(ShowArrowLeft);
+		}
+		if (ShowArrowRight != arrowRight.gameObject.active) {
+			arrowRight.gameObject.SetActiveRecursively(ShowArrowRight);
+		}
+		if (ShowArrowTop != arrowUp.gameObject.active) {
+			arrowUp.gameObject.SetActiveRecursively(ShowArrowTop);
+		}
+		if (ShowArrowBottom != arrowDown.gameObject.active) {
+			arrowDown.gameObject.SetActiveRecursively(ShowArrowBottom);
+		}
 	}
 	
 	void CalcSizes()
@@ -96,10 +109,10 @@ public class FocusedControlVisualizer : MonoBehaviour {
 	
 	void UpdatePositions()
 	{
-		//arrowLeft.transform.localPosition = left + new Vector3(-horizontalArrowOffset.x, horizontalArrowOffset.y, 0);
-		//arrowRight.transform.localPosition = right + new Vector3(horizontalArrowOffset.x, horizontalArrowOffset.y, 0);
-		//arrowUp.transform.localPosition = top + new Vector3(verticalArrowOffset.x, -verticalArrowOffset.y, 0);
-		//arrowDown.transform.localPosition = bottom + new Vector3(verticalArrowOffset.x, verticalArrowOffset.y, 0);
+		if (null != arrowLeft) arrowLeft.transform.localPosition = left + new Vector3(-horizontalArrowOffset.x, horizontalArrowOffset.y, 0);
+		if (null != arrowRight) arrowRight.transform.localPosition = right + new Vector3(horizontalArrowOffset.x, horizontalArrowOffset.y, 0);
+		if (null != arrowUp) arrowUp.transform.localPosition = top + new Vector3(verticalArrowOffset.x, -verticalArrowOffset.y, 0);
+		if (null != arrowDown) arrowDown.transform.localPosition = bottom + new Vector3(verticalArrowOffset.x, verticalArrowOffset.y, 0);
 		
 		UpdateScrollIndicator(scrollIndicatorLeft, 
 		                      left + new Vector3(-scrollIndicatorOffset,0,0), 

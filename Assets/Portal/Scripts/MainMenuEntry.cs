@@ -10,4 +10,6 @@ public class MainMenuEntry : MonoBehaviour {
 	
 	public Material iconDefault;
 	public Material iconSelected;
+	
+	public Camera targetCamera;
 }
