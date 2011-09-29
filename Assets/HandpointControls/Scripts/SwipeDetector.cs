@@ -11,8 +11,8 @@ public enum SwipeDetectorDirection
 public class SwipeDetector : MonoBehaviour {
 	public float size = 250.0f;
 	public SwipeDetectorDirection direction = SwipeDetectorDirection.Horizontal;
-	
-	Fader swipeFader;
+
+    public Fader swipeFader { get; private set; }
 	string dirStr;
 	
 	public bool IsSwiped { get; private set; }
