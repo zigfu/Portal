@@ -10,6 +10,9 @@ public class Navigator : MonoBehaviour {
 	public Transform HomeScreen;
 	public Transform ActiveItem { get; private set; }
 
+    public bool TriggerCooldown = false;
+    public float CooldownTime = 0.5f;
+
 	List<Transform> historyStack = new List<Transform>();
 
 	public void NavigateTo(string name)
@@ -50,6 +53,9 @@ public class Navigator : MonoBehaviour {
 	
 	void ActivateItem(Transform obj)
 	{
+        if (TriggerCooldown) {
+            SessionManager.Instance.StartCooldown(CooldownTime);
+        }
 		ActiveItem = obj;
 		obj.SendMessage("Navigator_Activate", SendMessageOptions.DontRequireReceiver);
 		SendMessage("Navigator_ActivatedItem", obj, SendMessageOptions.DontRequireReceiver);

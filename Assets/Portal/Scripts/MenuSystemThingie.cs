@@ -53,10 +53,15 @@ public class MenuSystemThingie : MonoBehaviour {
     {
         //TODO: real implementation with a stack and stuff, not just one step back
         if (null != lastMaterial) {
-            Set(lastTitle, lastMaterial, false);
-            navigator.NavigateBack();
-            lastTitle = null;
-            lastMaterial = null;
+            if (!SessionManager.Instance.CoolingDown) {
+                Set(lastTitle, lastMaterial, false);
+                navigator.NavigateBack();
+                lastTitle = null;
+                lastMaterial = null;
+            }
+            else {
+                print("MST: got back during cooldown, doing nothing");
+            }
         }
         else {
             Home();
