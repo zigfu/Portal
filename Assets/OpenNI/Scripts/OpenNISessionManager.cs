@@ -344,4 +344,26 @@ public class SessionManager : MonoBehaviour {
         SceneMetaData sceneMD = userGenerator.GetUserPixels(0);
         return sceneMD[(int)ProjectiveHandPoint.X, (int)ProjectiveHandPoint.Y];
     }
+
+
+    private int Cooldowns = 0;
+    public bool CoolingDown
+    {
+        get
+        {
+            return Cooldowns > 0;
+        }
+    }
+    public void StartCooldown(float seconds)
+    {
+        Cooldowns++; // make sure cooldown starts the moment we call the function
+                     // (I'm unsure of whether the code before the first yield is
+                     // executed or not before scheduling the rest of the coroutine)
+        StartCoroutine(DoCooldown(seconds));
+    }
+    IEnumerator DoCooldown(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Cooldowns--;
+    }
 }
