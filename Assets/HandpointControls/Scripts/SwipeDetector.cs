@@ -44,8 +44,12 @@ public class SwipeDetector : MonoBehaviour {
 		swipeFader.MoveToContain(pos);
         swipeFader.Hand_Update(pos);
 	
+		// quick out if in cooldown
+		if (SessionManager.Instance.CoolingDown) return;
+		
 		// swipe logic
 		if (!IsSwiped) {
+			
             if (Mathf.Approximately(swipeFader.value, 1.0f) || 
 			    Mathf.Approximately(swipeFader.value, 0.0f)) {
 				
