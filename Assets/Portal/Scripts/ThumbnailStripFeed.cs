@@ -38,7 +38,7 @@ public class ThumbnailStripFeed : MonoBehaviour {
 		if (mme.NavigateOnSelect && navigator) {
 			navigator.NavigateTo(mme.NavigationTarget);
 			if (menuSystemThingie) {
-				menuSystemThingie.Set(mme.Title, mme.iconSelected, mme.targetCamera);
+				menuSystemThingie.Set(mme.Title, mme.iconSelected);
 			}
 		}
 	}
