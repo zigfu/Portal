@@ -19,9 +19,28 @@ public class MenuSystemThingie : MonoBehaviour {
 	void Update () {
 	
 	}
-	
-	public void Set(string strTitle, Material matIcon, Camera targetCamera)
+
+    string lastTitle;
+    Material lastMaterial;
+    Camera lastCamera;
+
+    public void Set(string strTitle, Material matIcon, Camera targetCamera)
+    {
+        Set(strTitle, matIcon, targetCamera, false);
+    }
+
+	public void Set(string strTitle, Material matIcon, Camera targetCamera, bool keepHistory)
 	{
+        if (keepHistory) {
+            lastTitle = title.GetComponent<TextMesh>().text;
+            lastCamera = currentMenuCam;
+            lastMaterial = icon.GetComponent<Renderer>().material;
+        }
+        else {
+            lastTitle = null;
+            lastMaterial = null;
+            lastCamera = null;
+        }
 		title.GetComponent<TextMesh>().text = strTitle;
 		icon.GetComponent<Renderer>().material = matIcon;
 		
@@ -34,6 +53,21 @@ public class MenuSystemThingie : MonoBehaviour {
 		myCamera.gameObject.SetActiveRecursively(true);
 		GetComponent<HandPointControl>().Activate();
 	}
+
+    public void Back()
+    {
+        //TODO: real implementation with a stack and stuff, not just one step back
+        if (null != lastCamera) {
+            Set(lastTitle, lastMaterial, lastCamera, false);
+            navigator.NavigateBack();
+            lastTitle = null;
+            lastMaterial = null;
+            lastCamera = null;
+        }
+        else {
+            Home();
+        }
+    }
 	
 	public void Home()
 	{
@@ -44,14 +78,15 @@ public class MenuSystemThingie : MonoBehaviour {
 	
 	void SwipeDetector_Left()
 	{
-		Home();
+		//Home();
+        Back();
 	}
 	
 	void OnGUI()
 	{
 		if (Event.current.Equals(Event.KeyboardEvent("escape"))) {
             if (GetComponent<HandPointControl>().IsActive) {
-				Home();
+				Back();
 				Event.current.Use();
 			}
         }
