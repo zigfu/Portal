@@ -6,7 +6,10 @@ public class ZigsFeed : MonoBehaviour {
 	public ScrollingMenu menu;
 	public ZigItem ZigMenuItem;
 	public bool Remote = false;
-
+	public MenuSystemThingie mst;
+	public ZigInfo zigInfo;
+	public Navigator nav;
+	
 	// Use this for initialization
 	void Start () {
 		if (!menu) {
@@ -53,6 +56,19 @@ public class ZigsFeed : MonoBehaviour {
 	{
 		menu.Clear();
 		Load();
+	}
+	
+	void Menu_Select(Transform item)
+	{
+		if (Remote) {
+			RemoteZig remoteZig = item.GetComponent<ZigItem>().remoteZig;
+			zigInfo.Init(remoteZig);
+			mst.Set(remoteZig.Metadata.Name, item.transform.Find("Thumbnail").renderer.material, true);
+			nav.NavigateTo(zigInfo.transform);
+		}
+		else {
+			item.GetComponent<ZigItem>().Launch();
+		}
 	}
 	
 	void OnGUI()

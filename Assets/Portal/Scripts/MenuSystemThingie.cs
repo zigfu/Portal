@@ -22,24 +22,21 @@ public class MenuSystemThingie : MonoBehaviour {
 
     string lastTitle;
     Material lastMaterial;
-    Camera lastCamera;
 
-    public void Set(string strTitle, Material matIcon, Camera targetCamera)
+    public void Set(string strTitle, Material matIcon)
     {
-        Set(strTitle, matIcon, targetCamera, false);
+        Set(strTitle, matIcon, false);
     }
 
-	public void Set(string strTitle, Material matIcon, Camera targetCamera, bool keepHistory)
+	public void Set(string strTitle, Material matIcon, bool keepHistory)
 	{
         if (keepHistory) {
             lastTitle = title.GetComponent<TextMesh>().text;
-            lastCamera = currentMenuCam;
             lastMaterial = icon.GetComponent<Renderer>().material;
         }
         else {
             lastTitle = null;
             lastMaterial = null;
-            lastCamera = null;
         }
 		title.GetComponent<TextMesh>().text = strTitle;
 		icon.GetComponent<Renderer>().material = matIcon;
@@ -47,8 +44,6 @@ public class MenuSystemThingie : MonoBehaviour {
 		if (null != currentMenuCam) {
 			currentMenuCam.gameObject.SetActiveRecursively(false);
 		}
-		currentMenuCam = targetCamera;
-		currentMenuCam.gameObject.SetActiveRecursively(true);
 		
 		myCamera.gameObject.SetActiveRecursively(true);
 		GetComponent<HandPointControl>().Activate();
@@ -57,12 +52,11 @@ public class MenuSystemThingie : MonoBehaviour {
     public void Back()
     {
         //TODO: real implementation with a stack and stuff, not just one step back
-        if (null != lastCamera) {
-            Set(lastTitle, lastMaterial, lastCamera, false);
+        if (null != lastMaterial) {
+            Set(lastTitle, lastMaterial, false);
             navigator.NavigateBack();
             lastTitle = null;
             lastMaterial = null;
-            lastCamera = null;
         }
         else {
             Home();

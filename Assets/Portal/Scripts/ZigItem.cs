@@ -7,7 +7,11 @@ public class ZigItem : MonoBehaviour {
 	
 	public bool Installed { get; private set; }
 	
+	public MenuSystemThingie mst;
+	public ZigInfo zigInfo;
+	
 	InstalledZig installedZig;
+	public RemoteZig remoteZig;
 	string zigUri;
 	bool installing;
 	
@@ -22,6 +26,7 @@ public class ZigItem : MonoBehaviour {
 	
 	public void InitRemote(RemoteZig zig)
 	{
+		remoteZig = zig;
 		if (ZigLib.ZigLib.IsZigInstalled(zig as IZig)) {
 			installedZig = ZigLib.ZigLib.GetInstalledZig(zig);
 		}
@@ -81,7 +86,7 @@ public class ZigItem : MonoBehaviour {
 		//SendMessageUpwards("Zig_Installed", installedZig, SendMessageOptions.RequireReceiver);
 	}
 	
-	IEnumerator Launch()
+	public IEnumerator Launch()
 	{
 		if (null == installedZig) yield break;
 		print("Launching zig...");
@@ -90,11 +95,16 @@ public class ZigItem : MonoBehaviour {
 	
 	void MenuItem_Select()
 	{
-		if (null == installedZig) {
-			StartCoroutine(InstallFrom(zigUri));
-		} else {
-			StartCoroutine(Launch());
-		}
+		//if (null == installedZig) {
+		//	StartCoroutine(InstallFrom(zigUri));
+		//} else {
+		//	StartCoroutine(Launch());
+		//}
+		
+		//if (null != remoteZig) {
+		//	zigInfo.Init(remoteZig);
+		//	mst.Set(remoteZig.Metadata.Name, transform.Find("Thumbnail").renderer.material, 
+		//}
 	}
 	
 	void OnGUI()
