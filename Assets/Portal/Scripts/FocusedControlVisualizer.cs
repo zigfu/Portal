@@ -1,6 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
+public enum ArrowDirection
+{
+	None,
+	Left,
+	Right,
+	Up,
+	Down
+}
+
 public class FocusedControlVisualizer : MonoBehaviour {
 	
 	public Vector2 Size;
@@ -34,6 +43,11 @@ public class FocusedControlVisualizer : MonoBehaviour {
 	public FaderVisualizer scrollIndicatorRight;
 	public FaderVisualizer scrollIndicatorTop;
 	public FaderVisualizer scrollIndicatorBottom;
+	
+	public bool VisualizeSwipeLeft;
+	public bool VisualizeSwipeRight;
+	public bool VisualizeSwipeUp;
+	public bool VisualizeSwipeDown;
 
 	Vector3 top;
 	Vector3 left;
@@ -42,6 +56,9 @@ public class FocusedControlVisualizer : MonoBehaviour {
 	
 	public Fader verticalFader;
 	public Fader horizontalFader;
+	
+	public SwipeDetector swipeSource;
+	Fader swipeFader;
 
 	void Start()
 	{
@@ -52,6 +69,11 @@ public class FocusedControlVisualizer : MonoBehaviour {
 		if (null != verticalFader) {
 			scrollIndicatorLeft.target = verticalFader;
 			scrollIndicatorRight.target = verticalFader;
+		}
+		
+		if (null != swipeSource)
+		{
+			swipeFader = swipeSource.swipeFader;
 		}
 		
 		CalcSizes();
@@ -129,6 +151,27 @@ public class FocusedControlVisualizer : MonoBehaviour {
 		UpdateScrollIndicator(scrollIndicatorBottom, 
 		                      bottom + new Vector3(0,-scrollIndicatorOffset,0),
 		                      new Vector2(Size.x, scrollIndicatorWidth));
+		
+		float FullPoint = 0.0f;
+		float StartPoint = 0.3f;
+		
+		if (null != swipeFader) {
+            float length = FullPoint - StartPoint; // no abs intentionally
+            float pos = Mathf.Clamp01((swipeFader.value - StartPoint) / length);
+		
+			if (VisualizeSwipeLeft) {
+				arrowLeft.SetProgress(pos);
+			}
+			if (VisualizeSwipeRight) {
+				arrowRight.SetProgress(1.0f - pos);
+			}
+			if (VisualizeSwipeUp) {
+				arrowUp.SetProgress(1.0f - pos);
+			}
+			if (VisualizeSwipeDown) {
+				arrowDown.SetProgress(pos);
+			}
+		}
 	}
 	
 	void UpdateScrollIndicator(FaderVisualizer visualizer, Vector3 localPos, Vector2 size)

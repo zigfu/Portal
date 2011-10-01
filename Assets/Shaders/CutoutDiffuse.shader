@@ -27,7 +27,7 @@ struct Input {
 void surf (Input IN, inout SurfaceOutput o) {
 	float2 cutoffPoint = _StartPoint.xy + _Direction.xy * _Cutoff;
 	float2 delta = IN.uv_MainTex - cutoffPoint;
-	clip(dot(delta, _Direction.xy));
+	clip(-dot(delta, _Direction.xy));
 	// in case we aren't clipped, do the texture sampling, etc.
 	fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 	o.Albedo = c.rgb;

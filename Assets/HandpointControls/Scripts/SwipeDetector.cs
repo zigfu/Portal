@@ -86,14 +86,14 @@ public class SwipeDetector : MonoBehaviour {
 	{
 		if (Mathf.Approximately(val, 1.0f)) {
 			switch (dir) {
-				case SwipeDetectorDirection.Horizontal : return (OpenNIContext.Instance.Mirror) ? "Left" : "Right";
+				case SwipeDetectorDirection.Horizontal : return "Right";
 				case SwipeDetectorDirection.Vertical : return "Up";
 			}
 		}
 			
 		if (Mathf.Approximately(val, 0.0f)) {
 			switch (dir) {
-				case SwipeDetectorDirection.Horizontal : return (OpenNIContext.Instance.Mirror) ? "Right" : "Left";
+				case SwipeDetectorDirection.Horizontal : return "Left";
 				case SwipeDetectorDirection.Vertical : return "Down";
 			}
 		}
@@ -104,7 +104,7 @@ public class SwipeDetector : MonoBehaviour {
 	Vector3 SwipeDirectionToVector(SwipeDetectorDirection dir)
 	{
 		switch (dir) {
-			case SwipeDetectorDirection.Horizontal: return Vector3.right; // TODO: Take mirror into account
+			case SwipeDetectorDirection.Horizontal: return (OpenNIContext.Instance.Mirror) ? Vector3.left : Vector3.right;
 			case SwipeDetectorDirection.Vertical: return Vector3.up;
 		}
 		return Vector3.zero;
