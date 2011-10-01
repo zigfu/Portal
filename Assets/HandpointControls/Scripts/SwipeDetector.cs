@@ -19,7 +19,7 @@ public class SwipeDetector : MonoBehaviour {
 	float swipedValue;
 	
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         swipeFader = gameObject.AddComponent<Fader>();
         swipeFader.direction = SwipeDirectionToVector(direction);
 	}
