@@ -66,7 +66,7 @@ public class ZigsFeed : MonoBehaviour {
 			nav.NavigateTo(zigInfo.transform);
 		}
 		else {
-			item.GetComponent<ZigItem>().Launch();
+			StartCoroutine(item.GetComponent<ZigItem>().Launch());
 		}
 	}
 	
