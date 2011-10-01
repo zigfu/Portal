@@ -5,7 +5,6 @@ public class ThumbnailStripFeed : MonoBehaviour {
 	public ScrollingMenu menu;
 	public ThumbnailItem item;
 	public Navigator navigator;
-	public MenuSystemThingie menuSystemThingie;
 	public TextMesh titleLabel;
 	public TextMesh descriptionLabel;
 	
@@ -37,9 +36,6 @@ public class ThumbnailStripFeed : MonoBehaviour {
 		MainMenuEntry mme = item.gameObject.GetComponent<ThumbnailItem>().mme;
 		if (mme.NavigateOnSelect && navigator) {
 			navigator.NavigateTo(mme.NavigationTarget);
-			if (menuSystemThingie) {
-				menuSystemThingie.Set(mme.Title, mme.iconSelected);
-			}
 		}
 	}
 	

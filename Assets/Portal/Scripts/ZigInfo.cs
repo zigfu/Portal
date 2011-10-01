@@ -32,20 +32,26 @@ public class ZigInfo : MonoBehaviour {
 		}
 		
 		if (null != installedZig) {
-			//StartCoroutine(LoadThumbnail(installedZig.ThumbnailURI));
+			
 			transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "LAUNCH";
 		}
 		else {			
 			//StartCoroutine(LoadThumbnail(zig.ThumbnailURI));
 			transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALL";
 		}
+		
+		MSTScreen screenInfo = GetComponent<MSTScreen>();
+		if (null != screenInfo) {
+			screenInfo.Title = zig.Metadata.Name;
+			StartCoroutine(LoadThumbnail(screenInfo.Icon, zig.ThumbnailURI));
+		}
 	}
 	
-	IEnumerator LoadThumbnail(string uri)
+	IEnumerator LoadThumbnail(Material mat, string uri)
 	{
 		WWW req = new WWW(uri);
 		yield return req;
-		transform.Find("Thumbnail").renderer.material.mainTexture = req.texture;
+		mat.mainTexture = req.texture;
 	}
 	
 		

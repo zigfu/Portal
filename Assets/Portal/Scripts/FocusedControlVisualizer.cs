@@ -71,10 +71,10 @@ public class FocusedControlVisualizer : MonoBehaviour {
 			scrollIndicatorRight.target = verticalFader;
 		}
 		
-		if (null != swipeSource)
-		{
-			swipeFader = swipeSource.swipeFader;
-		}
+		//if (null != swipeSource)
+		//{
+		//	swipeFader = swipeSource.swipeFader;
+		//}
 		
 		CalcSizes();
 		UpdatePositions();
@@ -155,20 +155,23 @@ public class FocusedControlVisualizer : MonoBehaviour {
 		float FullPoint = 0.0f;
 		float StartPoint = 0.3f;
 		
-		if (null != swipeFader) {
+		if (null != swipeSource) {
             float length = FullPoint - StartPoint; // no abs intentionally
-            float pos = Mathf.Clamp01((swipeFader.value - StartPoint) / length);
-		
+            
 			if (VisualizeSwipeLeft) {
+				float pos = Mathf.Clamp01((swipeSource.swipeFader.value - StartPoint) / length);
 				arrowLeft.SetProgress(pos);
 			}
 			if (VisualizeSwipeRight) {
-				arrowRight.SetProgress(1.0f - pos);
+				float pos = Mathf.Clamp01(((1.0f - swipeSource.swipeFader.value) - StartPoint) / length);
+				arrowRight.SetProgress(pos);
 			}
 			if (VisualizeSwipeUp) {
-				arrowUp.SetProgress(1.0f - pos);
+				float pos = Mathf.Clamp01(((1.0f - swipeSource.swipeFader.value) - StartPoint) / length);
+				arrowUp.SetProgress(pos);
 			}
 			if (VisualizeSwipeDown) {
+				float pos = Mathf.Clamp01((swipeSource.swipeFader.value - StartPoint) / length);
 				arrowDown.SetProgress(pos);
 			}
 		}

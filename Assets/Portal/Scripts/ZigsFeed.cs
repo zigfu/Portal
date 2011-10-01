@@ -63,7 +63,6 @@ public class ZigsFeed : MonoBehaviour {
 		if (Remote) {
 			RemoteZig remoteZig = item.GetComponent<ZigItem>().remoteZig;
 			zigInfo.Init(remoteZig);
-			mst.Set(remoteZig.Metadata.Name, item.transform.Find("Thumbnail").renderer.material, true);
 			nav.NavigateTo(zigInfo.transform);
 		}
 		else {

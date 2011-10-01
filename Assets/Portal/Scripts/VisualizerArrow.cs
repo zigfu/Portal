@@ -49,6 +49,7 @@ public class VisualizerArrow : MonoBehaviour {
 		fill.material.SetFloat("_Cutoff", progress);
 		Color c = fill.material.color;
 		c.a = progress;
+		fill.material.color = c;
 	}
 	
 	IEnumerator AnimateSelect(float time, int reps)
