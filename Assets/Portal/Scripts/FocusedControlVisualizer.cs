@@ -71,13 +71,9 @@ public class FocusedControlVisualizer : MonoBehaviour {
 			scrollIndicatorRight.target = verticalFader;
 		}
 		
-		//if (null != swipeSource)
-		//{
-		//	swipeFader = swipeSource.swipeFader;
-		//}
-		
 		CalcSizes();
 		UpdatePositions();
+		EnableAndDisableComponents();
 	}
 	
 	void Update()

@@ -22,10 +22,10 @@ public class ZigInfo : MonoBehaviour {
 	
 	}
 	
-	public void Init(RemoteZig zig)
+	public void Init(RemoteZig zig, Material icon)
 	{
 		remoteZig = zig;
-		transform.Find("Description").gameObject.GetComponent<TextMesh>().text = zig.Metadata.Description;
+		transform.Find("Description").gameObject.GetComponent<TextMesh>().text = TextTools.WordWrap(zig.Metadata.Description, 30);
 		transform.Find("Developer").gameObject.GetComponent<TextMesh>().text = zig.Metadata.Developer;
 		if (ZigLib.ZigLib.IsZigInstalled(zig)) {
 			installedZig = ZigLib.ZigLib.GetInstalledZig(zig);
@@ -43,7 +43,7 @@ public class ZigInfo : MonoBehaviour {
 		MSTScreen screenInfo = GetComponent<MSTScreen>();
 		if (null != screenInfo) {
 			screenInfo.Title = zig.Metadata.Name;
-			StartCoroutine(LoadThumbnail(screenInfo.Icon, zig.ThumbnailURI));
+			screenInfo.Icon = icon;
 		}
 	}
 	

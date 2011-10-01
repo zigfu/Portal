@@ -52,7 +52,7 @@ public class SessionManager : MonoBehaviour {
 
 	public bool DetectWave = true;
 	public bool DetectPush = true;
-    public bool ExperimentalGestureless = true;
+    public bool ExperimentalGestureless = false;
     public bool StealOnWave = true;
 
     public bool RotateToUser = true;

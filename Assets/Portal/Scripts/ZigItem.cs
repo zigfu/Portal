@@ -15,6 +15,12 @@ public class ZigItem : MonoBehaviour {
 	string zigUri;
 	bool installing;
 	
+	public Material Icon {
+		get {
+			return transform.Find("Thumbnail").renderer.material;
+		}
+	}
+	
 	public void Init(IZig zig)
 	{
 		SharedMetadata md = zig.Metadata;
