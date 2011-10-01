@@ -5,8 +5,7 @@ public class EnableOnNavigate : MonoBehaviour {
 
     public Transform[] targets;
 
-	// Use this for initialization
-	void Start () {
+	void Awake () {
         Navigator_Deactivate();
 	}
 	
