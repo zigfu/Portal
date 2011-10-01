@@ -70,7 +70,11 @@ public class ZigItem : MonoBehaviour {
 		}
 		yield return req; // just to be sure
 		installing = false;
-		
+
+        if (req.error != null) {
+            print("download failed: " + req.error);
+            yield break;
+        }
 		// write downloaded file to temp file
 		string filename = Path.GetFullPath(Path.GetFileName(uri));
 		File.WriteAllBytes(filename, req.bytes);
