@@ -5,7 +5,8 @@ using ZigLib;
 
 [RequireComponent(typeof(PushDetector))]
 public class ZigInfo : MonoBehaviour {
-
+	public GameObject downloadProgressBar;
+	
 	RemoteZig remoteZig;
 	InstalledZig installedZig;
 	
@@ -14,7 +15,7 @@ public class ZigInfo : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
+		downloadProgressBar.SetActiveRecursively(false);
 	}
 	
 	// Update is called once per frame
@@ -61,11 +62,16 @@ public class ZigInfo : MonoBehaviour {
 		if (null != installReq) yield break;
 		
 		print("Downloading zig...");
+		
+		downloadProgressBar.SetActiveRecursively(true);
+		transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALLING...";
+		
 		installing = true;
 		installReq = new WWW(uri);
 		while (installReq.progress < 1.0) {
 			yield return new WaitForSeconds(0.1f);
 			print(installReq.progress); // visualize
+			downloadProgressBar.transform.Find("Fill").renderer.material.SetFloat("_Cutoff", installReq.progress);
 		}
 		yield return installReq; // just to be sure
 		installing = false;
@@ -80,6 +86,7 @@ public class ZigInfo : MonoBehaviour {
 		File.Delete(filename);
 			
 		// handle the fresh installation
+		downloadProgressBar.SetActiveRecursively(false);
 		transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "LAUNCH";
 		foreach (ZigsFeed feed in FindObjectsOfType(typeof(ZigsFeed))) {
 			if (!feed.Remote) {
