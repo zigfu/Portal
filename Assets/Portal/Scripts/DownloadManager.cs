@@ -26,7 +26,7 @@ public class DownloadManager : MonoBehaviour {
         }
     }
 	
-	Dictionary<string, WWW> activeDownloads;
+	Dictionary<string, WWW> activeDownloads = new Dictionary<string, WWW>();
 	
 	// Use this for initialization
 	void Start () {

@@ -45,7 +45,6 @@ public class ZigInfo : MonoBehaviour {
 		// installing
 		else if (DownloadManager.IsInstalling(zig))
 		{
-			transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALLING...";
 			StartCoroutine("UpdateInstallProgress", zig);
 		}
 		
@@ -64,7 +63,7 @@ public class ZigInfo : MonoBehaviour {
 	IEnumerator UpdateInstallProgress(RemoteZig zig)
 	{
 		WWW req = DownloadManager.GetActiveDownload(zig);
-		
+		transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALLING...";
 		while (!req.isDone) {
 			yield return new WaitForSeconds(0.1f);
 			downloadProgressBar.transform.Find("Fill").renderer.material.SetFloat("_Cutoff", installReq.progress);
@@ -142,10 +141,19 @@ public class ZigInfo : MonoBehaviour {
 	
 	void PushDetector_Click()
 	{
-		if (null == installedZig) {
-			StartCoroutine(InstallFrom(remoteZig.RemoteURI));
-		} else {
-			StartCoroutine(Launch());
+		// do nothing if already installing
+		if (DownloadManager.IsInstalling(remoteZig)) {
+			return;
 		}
+		
+		// launch if already installed
+		if (null != installedZig) {
+			StartCoroutine(Launch());
+			return;
+		}
+		
+		// otherwise start install
+		DownloadManager.StartZigDownload(remoteZig);
+		StartCoroutine("UpdateInstallProgress", remoteZig);
 	}
 }
