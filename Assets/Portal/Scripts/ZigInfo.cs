@@ -25,6 +25,9 @@ public class ZigInfo : MonoBehaviour {
 	
 	public void Init(RemoteZig zig, Material icon)
 	{
+		// Stop coroutine from running install
+		StopCoroutine("UpdateInstallProgress");
+		
 		remoteZig = zig;
 		transform.Find("Description").gameObject.GetComponent<TextMesh>().text = TextTools.WordWrap(zig.Metadata.Description, 30);
 		transform.Find("Developer").gameObject.GetComponent<TextMesh>().text = zig.Metadata.Developer;
@@ -32,12 +35,22 @@ public class ZigInfo : MonoBehaviour {
 			installedZig = ZigLib.ZigLib.GetInstalledZig(zig);
 		}
 		
+		// a zig can be remote, installed, or installing
+
+		// installed
 		if (null != installedZig) {
-			
 			transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "LAUNCH";
 		}
+		
+		// installing
+		else if (DownloadManager.IsInstalling(zig))
+		{
+			transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALLING...";
+			StartCoroutine("UpdateInstallProgress", DownloadManager.GetActiveDownload(zig));
+		}
+		
+		// remote
 		else {			
-			//StartCoroutine(LoadThumbnail(zig.ThumbnailURI));
 			transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALL";
 		}
 		
@@ -46,6 +59,16 @@ public class ZigInfo : MonoBehaviour {
 			screenInfo.Title = zig.Metadata.Name;
 			screenInfo.Icon = icon;
 		}
+	}
+	
+	IEnumerator UpdateInstallProgress(WWW req)
+	{
+		while (!req.isDone) {
+			yield return new WaitForSeconds(0.1f);
+			downloadProgressBar.transform.Find("Fill").renderer.material.SetFloat("_Cutoff", installReq.progress);
+		}
+		installedZig = ZigLib.ZigLib.GetInstalledZig(zig);
+		transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "LAUNCH";
 	}
 	
 	IEnumerator LoadThumbnail(Material mat, string uri)
