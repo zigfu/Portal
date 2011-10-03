@@ -3,7 +3,6 @@ using System.Collections;
 
 public class VisualizerArrow : MonoBehaviour {
 	public Renderer arrow;
-	public Renderer fill;
 	public float blinkTime = 0.5f;
 	public Color defaultColor;
 	public Color selectedColor;
@@ -14,9 +13,6 @@ public class VisualizerArrow : MonoBehaviour {
 	void Start () {
 		if (null == arrow) {
 			arrow = GetComponent<Renderer>();
-		}
-		if (null == fill) {
-			fill = transform.Find("Fill").gameObject.GetComponent<Renderer>();
 		}
 		
 		Unhighlight();
@@ -46,10 +42,11 @@ public class VisualizerArrow : MonoBehaviour {
 	public void SetProgress(float progress)
 	{
 		if (blinking) return;
-		fill.material.SetFloat("_Cutoff", progress);
-		Color c = fill.material.color;
+        //TODO: not hardcoded to the second material?
+		arrow.materials[1].SetFloat("_Cutoff", progress);
+		Color c = arrow.materials[1].color;
 		c.a = progress;
-		fill.material.color = c;
+        arrow.materials[1].color = c;
 	}
 	
 	IEnumerator AnimateSelect(float time, int reps)

@@ -96,7 +96,8 @@ public class ZigInfo : MonoBehaviour {
 		while (installReq.progress < 1.0) {
 			yield return new WaitForSeconds(0.1f);
 			print(installReq.progress); // visualize
-			downloadProgressBar.transform.Find("Fill").renderer.material.SetFloat("_Cutoff", installReq.progress);
+            //TODO: not hard-coded to second material?
+			downloadProgressBar.renderer.materials[1].SetFloat("_Cutoff", installReq.progress);
 		}
 		yield return installReq; // just to be sure
 		installing = false;
