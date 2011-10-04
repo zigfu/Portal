@@ -10,9 +10,6 @@ public class ZigInfo : MonoBehaviour {
 	RemoteZig remoteZig;
 	InstalledZig installedZig;
 	
-	bool installing;
-	WWW installReq;
-	
 	// Use this for initialization
 	void Start () {
 		
@@ -29,6 +26,7 @@ public class ZigInfo : MonoBehaviour {
 		// Stop coroutine from running install
 		downloadProgressBar.SetActiveRecursively(false);
 		StopCoroutine("UpdateInstallProgress");
+		installedZig = null;
 		
 		remoteZig = zig;
 		transform.Find("Description").gameObject.GetComponent<TextMesh>().text = TextTools.WordWrap(zig.Metadata.Description, 30);
@@ -85,48 +83,7 @@ public class ZigInfo : MonoBehaviour {
 		yield return req;
 		mat.mainTexture = req.texture;
 	}
-	
-		
-	IEnumerator InstallFrom(string uri)
-	{
-		// prevent double install
-		if (null != installReq) yield break;
-		
-		print("Downloading zig...");
-		
-		downloadProgressBar.SetActiveRecursively(true);
-		transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALLING...";
-		
-		installing = true;
-		installReq = new WWW(uri);
-		while (installReq.progress < 1.0) {
-			yield return new WaitForSeconds(0.1f);
-			print(installReq.progress); // visualize
-            //TODO: not hard-coded to second material?
-			downloadProgressBar.renderer.materials[1].SetFloat("_Cutoff", installReq.progress);
-		}
-		yield return installReq; // just to be sure
-		installing = false;
-		
-		// write downloaded file to temp file
-		string filename = Path.GetFullPath(Path.GetFileName(uri));
-		File.WriteAllBytes(filename, installReq.bytes);
-		
-		// install & delete downloaded file
-		print("Installing zig...");
-		installedZig = ZigLib.ZigLib.InstallZig(filename);
-		File.Delete(filename);
-			
-		// handle the fresh installation
-		downloadProgressBar.SetActiveRecursively(false);
-		transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "LAUNCH";
-		foreach (ZigsFeed feed in FindObjectsOfType(typeof(ZigsFeed))) {
-			if (!feed.Remote) {
-				feed.ReloadZigs();
-			}
-		}
-	}
-	
+
 	IEnumerator Launch()
 	{
 		if (null == installedZig) yield break;
@@ -162,5 +119,15 @@ public class ZigInfo : MonoBehaviour {
 		// otherwise start install
 		DownloadManager.StartZigDownload(remoteZig);
 		StartCoroutine("UpdateInstallProgress", remoteZig);
+	}
+	
+	void OnGUI()
+	{
+		if (!GetComponent<HandPointControl>().IsActive) { return; }
+		
+		if (Event.current.Equals(Event.KeyboardEvent("[enter]"))) {
+		    PushDetector_Click();
+		    Event.current.Use();
+		}
 	}
 }
