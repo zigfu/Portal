@@ -6,6 +6,7 @@ public class VisualizerArrow : MonoBehaviour {
 	public float blinkTime = 0.5f;
 	public Color defaultColor;
 	public Color selectedColor;
+	public Color disabledColor;
 	
 	bool blinking;
 	
@@ -14,6 +15,9 @@ public class VisualizerArrow : MonoBehaviour {
 		if (null == arrow) {
 			arrow = GetComponent<Renderer>();
 		}
+		
+		arrow.materials[0].color = defaultColor;
+		arrow.materials[1].color = selectedColor;
 		
 		Unhighlight();
 	}
@@ -37,6 +41,16 @@ public class VisualizerArrow : MonoBehaviour {
 	public void Unhighlight()
 	{
 		SetProgress(0.0f);
+	}
+	
+	public void DisableOMercy()
+	{
+		arrow.materials[0].color = disabledColor;
+	}
+	
+	public void EnableOMerciness()
+	{
+		arrow.materials[0].color = defaultColor;
 	}
 	
 	public void SetProgress(float progress)
