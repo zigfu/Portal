@@ -15,6 +15,7 @@ public class ZigInfo : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		
 		downloadProgressBar.SetActiveRecursively(false);
 	}
 	
@@ -26,6 +27,7 @@ public class ZigInfo : MonoBehaviour {
 	public void Init(RemoteZig zig, Material icon)
 	{
 		// Stop coroutine from running install
+		downloadProgressBar.SetActiveRecursively(false);
 		StopCoroutine("UpdateInstallProgress");
 		
 		remoteZig = zig;
@@ -39,17 +41,20 @@ public class ZigInfo : MonoBehaviour {
 
 		// installed
 		if (null != installedZig) {
+			print("Initing installed ziginfo");
 			transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "LAUNCH";
 		}
 		
 		// installing
 		else if (DownloadManager.IsInstalling(zig))
 		{
+			print("Initing ziginfo with install in progress");
 			StartCoroutine("UpdateInstallProgress", zig);
 		}
 		
 		// remote
 		else {			
+			print("Initing remote ziginfo");
 			transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALL";
 		}
 		
@@ -64,11 +69,13 @@ public class ZigInfo : MonoBehaviour {
 	{
 		WWW req = DownloadManager.GetActiveDownload(zig);
 		transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "INSTALLING...";
+		downloadProgressBar.SetActiveRecursively(true);
 		while (!req.isDone) {
 			yield return new WaitForSeconds(0.1f);
-			downloadProgressBar.transform.Find("Fill").renderer.material.SetFloat("_Cutoff", installReq.progress);
+			downloadProgressBar.renderer.materials[1].SetFloat("_Cutoff", req.progress);
 		}
 		installedZig = ZigLib.ZigLib.GetInstalledZig(zig);
+		downloadProgressBar.SetActiveRecursively(false);
 		transform.Find("ActionLabel").gameObject.GetComponent<TextMesh>().text = "LAUNCH";
 	}
 	
