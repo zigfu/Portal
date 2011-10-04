@@ -87,6 +87,18 @@ public class ScrollingMenu : MonoBehaviour
             CenterIndex = (float)firstOnScreenIndex + (((float)WindowSize - 1) / 2.0f);
         }
     }
+	
+	public bool CanScrollForward {
+		get {
+			return  (items.Count > 0 && ActiveItemIndex < items.Count - 1);
+		}
+	}
+	
+	public bool CanScrollBack {
+		get {
+			return  (items.Count > 0 && ActiveItemIndex > 0);
+		}
+	}
 
     void Awake()
     {
