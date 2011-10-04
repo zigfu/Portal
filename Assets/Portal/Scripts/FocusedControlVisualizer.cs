@@ -59,7 +59,12 @@ public class FocusedControlVisualizer : MonoBehaviour {
 	
 	public SwipeDetector swipeSource;
 	Fader swipeFader;
-
+	
+	void Awake()
+	{
+		EnableAndDisableComponents();
+	}
+	
 	void Start()
 	{
 		if (null != horizontalFader) {
