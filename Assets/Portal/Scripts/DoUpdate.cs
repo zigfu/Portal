@@ -6,12 +6,10 @@ using System;
 
 public class DoUpdate : MonoBehaviour {
 
-    public float CurrentVersion = 0.1f;
+    public float CurrentVersion = 0.3f;
 
 	// Use this for initialization
 	void Start () {
-        //System.IO.Pipes.NamedPipeServerStream np = new System.IO.Pipes.NamedPipeServerStream("blahblah");
-
         StartCoroutine(CheckForUpdate());
 	}
 
@@ -62,6 +60,5 @@ public class DoUpdate : MonoBehaviour {
         ZigLib.Utility.MoveDirWithLockedFile(di.FullName, TempRunningDir);
         print(string.Format("moving temp directory {0} to binary directory {1}", TempExtractedPath, di.FullName));
         ZigLib.Utility.MoveDirWithLockedFile(TempExtractedPath, di.FullName);
-        Application.Quit();
     }
 }
