@@ -16,21 +16,14 @@ public class StartZiglibLoader : MonoBehaviour {
 	
 	IEnumerator WaitForLoader()
 	{
-		while (!LoaderLib.LoaderAPI.ServerExists()) {
-		    yield return new WaitForSeconds(0.5f);
-		}
+        yield break;
 	}
 	
 	void StartLoader()
 	{
-		if (!LoaderLib.LoaderAPI.ServerExists()) {
-			LoaderLib.LoaderAPI.LaunchServer();
-		}
 	}
 	
 	void OnApplicationShutdown()
 	{
-		// Handles shutdown server internally
-		LoaderLib.LoaderAPI.ShutdownClient();
 	}
 }

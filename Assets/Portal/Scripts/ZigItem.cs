@@ -99,8 +99,16 @@ public class ZigItem : MonoBehaviour {
 	public IEnumerator Launch()
 	{
 		if (null == installedZig) yield break;
+        //TODO: hack o'mercy
+        yield return null;
 		print("Launching zig...");
-		installedZig.Launch();
+        SessionManager.Instance.StopListening();
+        try {
+            installedZig.Launch(OpenNIContext.Context);
+        }
+        finally {
+            SessionManager.Instance.StartListening();
+        }
 	}
 	
 	void MenuItem_Select()

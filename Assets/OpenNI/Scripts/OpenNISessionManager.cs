@@ -67,25 +67,18 @@ public class SessionManager : MonoBehaviour {
 	
 	private HandsGenerator hands { get { return OpenNIContext.OpenNode(NodeType.Hands) as HandsGenerator; }}
 	private GestureGenerator gestures { get { return OpenNIContext.OpenNode(NodeType.Gesture) as GestureGenerator; }}
-	
+
+    EventHandler<HandCreateEventArgs> HandCreateDelegate;
+    EventHandler<HandUpdateEventArgs> HandUpdateDelegate;
+    EventHandler<HandDestroyEventArgs> HandDestroyDelegate;
+    EventHandler<GestureRecognizedEventArgs> GestureDetectedDelegate;
 	void Start()
 	{
-		this.hands.HandCreate += new EventHandler<HandCreateEventArgs>(hands_HandCreate);
-		this.hands.HandUpdate += new EventHandler<HandUpdateEventArgs>(hands_HandUpdate);
-		this.hands.HandDestroy += new EventHandler<HandDestroyEventArgs>(hands_HandDestroy);
-		
-		if (DetectWave) {
-			this.gestures.AddGesture ("Wave");
-		}
-		if (DetectPush) {
-			this.gestures.AddGesture ("Click");
-		}
-
-        if (ExperimentalGestureless) {
-            this.gestures.AddGesture("RaiseHand");
-        }
-
-		this.gestures.GestureRecognized += new EventHandler<GestureRecognizedEventArgs> (gestures_GestureRecognized);
+        HandCreateDelegate = new EventHandler<HandCreateEventArgs>(hands_HandCreate);
+        HandUpdateDelegate = new EventHandler<HandUpdateEventArgs>(hands_HandUpdate);
+        HandDestroyDelegate = new EventHandler<HandDestroyEventArgs>(hands_HandDestroy);
+        GestureDetectedDelegate = new EventHandler<GestureRecognizedEventArgs> (gestures_GestureRecognized);
+        StartListening();
 		
 		if (RotateToUser) {
 			if (null == userGenerator) {
@@ -93,6 +86,47 @@ public class SessionManager : MonoBehaviour {
 			}
 		}
 	}
+
+    // implicitly called on Start()
+    public void StartListening()
+    {
+        this.hands.HandCreate += HandCreateDelegate;
+        this.hands.HandUpdate += HandUpdateDelegate;
+        this.hands.HandDestroy += HandDestroyDelegate;
+
+        if (DetectWave) {
+            this.gestures.AddGesture("Wave");
+        }
+        if (DetectPush) {
+            this.gestures.AddGesture("Click");
+        }
+
+        if (ExperimentalGestureless) {
+            this.gestures.AddGesture("RaiseHand");
+        }
+
+        this.gestures.GestureRecognized += GestureDetectedDelegate;
+    }
+
+    public void StopListening()
+    {
+        this.hands.HandCreate -= HandCreateDelegate;
+        this.hands.HandUpdate -= HandUpdateDelegate;
+        this.hands.HandDestroy -= HandDestroyDelegate;
+
+        if (DetectWave) {
+            this.gestures.RemoveGesture("Wave");
+        }
+        if (DetectPush) {
+            this.gestures.RemoveGesture("Click");
+        }
+
+        if (ExperimentalGestureless) {
+            this.gestures.RemoveGesture("RaiseHand");
+        }
+
+        this.gestures.GestureRecognized -= GestureDetectedDelegate;
+    }
 		
 	void gestures_GestureRecognized (object Sender, GestureRecognizedEventArgs e)
 	{

@@ -86,9 +86,17 @@ public class ZigInfo : MonoBehaviour {
 
 	IEnumerator Launch()
 	{
-		if (null == installedZig) yield break;
+        if (null == installedZig) yield break;
+        //TODO: hack o'mercy
+        yield return null;
 		print("Launching zig...");
-		installedZig.Launch();
+        SessionManager.Instance.StopListening();
+        try {
+            installedZig.Launch(OpenNIContext.Context);
+        }
+        finally {
+            SessionManager.Instance.StartListening();
+        }
 	}
 	
 	// temporarily react to create, destroy, and click. eventually this will be replaced by an actual menu
@@ -113,6 +121,7 @@ public class ZigInfo : MonoBehaviour {
 		// launch if already installed
 		if (null != installedZig) {
 			StartCoroutine(Launch());
+            
 			return;
 		}
 		
