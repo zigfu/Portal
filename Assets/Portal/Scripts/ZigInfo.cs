@@ -5,6 +5,12 @@ using ZigLib;
 
 [RequireComponent(typeof(PushDetector))]
 public class ZigInfo : MonoBehaviour {
+#if UNITY_EDITOR
+    const bool isFullscreen = false;
+#else 
+    const bool isFullscreen = true;
+#endif
+
 	public GameObject downloadProgressBar;
 	
 	RemoteZig remoteZig;
@@ -15,10 +21,14 @@ public class ZigInfo : MonoBehaviour {
 		
 		downloadProgressBar.SetActiveRecursively(false);
 	}
-	
+    bool cleanupProcessLaunch = false;
 	// Update is called once per frame
 	void Update () {
-	
+        if (cleanupProcessLaunch) {
+            OpenNIContext.Instance.UpdateContext = true;
+            SessionManager.Instance.StartListening();
+            cleanupProcessLaunch = false;
+        }
 	}
 	
 	public void Init(RemoteZig zig, Material icon)
@@ -90,13 +100,20 @@ public class ZigInfo : MonoBehaviour {
         //TODO: hack o'mercy
         yield return null;
 		print("Launching zig...");
+        //SessionManager.Instance.StopListening();
+        //try {
+        //    installedZig.Launch(OpenNIContext.Context, isFullscreen);
+        //}
+        //finally {
+        //    SessionManager.Instance.StartListening();
+        //}
         SessionManager.Instance.StopListening();
-        try {
-            installedZig.Launch(OpenNIContext.Context);
-        }
-        finally {
-            SessionManager.Instance.StartListening();
-        }
+        OpenNIContext.Instance.UpdateContext = false;
+
+        installedZig.Launch(OpenNIContext.Context, delegate(object s, System.EventArgs e) {
+            cleanupProcessLaunch = true;
+            Debug.Log("done with process");
+        });
 	}
 	
 	// temporarily react to create, destroy, and click. eventually this will be replaced by an actual menu

@@ -4,8 +4,12 @@ using System.IO;
 using ZigLib;
 
 public class ZigItem : MonoBehaviour {
-	
-	public bool Installed { get; private set; }
+#if UNITY_EDITOR
+    const bool isFullscreen = false;
+#else 
+    const bool isFullscreen = true;
+#endif
+    public bool Installed { get; private set; }
 	
 	public MenuSystemThingie mst;
 	public ZigInfo zigInfo;
@@ -95,6 +99,16 @@ public class ZigItem : MonoBehaviour {
 		// tell someone to do something about this (make sure there is a receiver)
 		//SendMessageUpwards("Zig_Installed", installedZig, SendMessageOptions.RequireReceiver);
 	}
+    bool cleanupProcessLaunch = false;
+    // Update is called once per frame
+    void Update()
+    {
+        if (cleanupProcessLaunch) {
+            OpenNIContext.Instance.UpdateContext = true;
+            SessionManager.Instance.StartListening();
+            cleanupProcessLaunch = false;
+        }
+    }
 	
 	public IEnumerator Launch()
 	{
@@ -103,13 +117,26 @@ public class ZigItem : MonoBehaviour {
         yield return null;
 		print("Launching zig...");
         SessionManager.Instance.StopListening();
-        try {
-            installedZig.Launch(OpenNIContext.Context);
-        }
-        finally {
-            SessionManager.Instance.StartListening();
-        }
+        OpenNIContext.Instance.UpdateContext = false;
+        //try {
+        //    installedZig.Launch(OpenNIContext.Context, isFullscreen, );
+        //}
+        //finally {
+        //    SessionManager.Instance.StartListening();
+        //}
+        installedZig.Launch(OpenNIContext.Context, delegate(object s, System.EventArgs e) {
+            cleanupProcessLaunch = true;
+            Debug.Log("done with process");
+
+        });
 	}
+
+    //TODO: move somewhere else
+    // this is CRITICAL for unity not to hang on second run
+    public void OnApplicationQuit()
+    {
+        LoaderLib2.API.Shutdown();
+    }
 	
 	void MenuItem_Select()
 	{

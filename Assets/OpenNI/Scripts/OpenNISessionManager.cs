@@ -78,18 +78,6 @@ public class SessionManager : MonoBehaviour {
         HandUpdateDelegate = new EventHandler<HandUpdateEventArgs>(hands_HandUpdate);
         HandDestroyDelegate = new EventHandler<HandDestroyEventArgs>(hands_HandDestroy);
         GestureDetectedDelegate = new EventHandler<GestureRecognizedEventArgs> (gestures_GestureRecognized);
-        StartListening();
-		
-		if (RotateToUser) {
-			if (null == userGenerator) {
-				userGenerator = OpenNIContext.OpenNode(NodeType.User) as UserGenerator;
-			}
-		}
-	}
-
-    // implicitly called on Start()
-    public void StartListening()
-    {
         this.hands.HandCreate += HandCreateDelegate;
         this.hands.HandUpdate += HandUpdateDelegate;
         this.hands.HandDestroy += HandDestroyDelegate;
@@ -106,30 +94,62 @@ public class SessionManager : MonoBehaviour {
         }
 
         this.gestures.GestureRecognized += GestureDetectedDelegate;
+        StartListening();
+		
+		if (RotateToUser) {
+			if (null == userGenerator) {
+				userGenerator = OpenNIContext.OpenNode(NodeType.User) as UserGenerator;
+			}
+		}
+	}
+    bool listening = true;
+    // implicitly called on Start()
+    public void StartListening()
+    {
+        //this.hands.HandCreate += HandCreateDelegate;
+        //this.hands.HandUpdate += HandUpdateDelegate;
+        //this.hands.HandDestroy += HandDestroyDelegate;
+
+        //if (DetectWave) {
+        //    this.gestures.AddGesture("Wave");
+        //}
+        //if (DetectPush) {
+        //    this.gestures.AddGesture("Click");
+        //}
+
+        //if (ExperimentalGestureless) {
+        //    this.gestures.AddGesture("RaiseHand");
+        //}
+
+        //this.gestures.GestureRecognized += GestureDetectedDelegate;
+        listening = true;
     }
 
     public void StopListening()
     {
-        this.hands.HandCreate -= HandCreateDelegate;
-        this.hands.HandUpdate -= HandUpdateDelegate;
-        this.hands.HandDestroy -= HandDestroyDelegate;
+        //this.hands.HandCreate -= HandCreateDelegate;
+        //this.hands.HandUpdate -= HandUpdateDelegate;
+        //this.hands.HandDestroy -= HandDestroyDelegate;
 
-        if (DetectWave) {
-            this.gestures.RemoveGesture("Wave");
-        }
-        if (DetectPush) {
-            this.gestures.RemoveGesture("Click");
-        }
+        //if (DetectWave) {
+        //    this.gestures.RemoveGesture("Wave");
+        //}
+        //if (DetectPush) {
+        //    this.gestures.RemoveGesture("Click");
+        //}
 
-        if (ExperimentalGestureless) {
-            this.gestures.RemoveGesture("RaiseHand");
-        }
+        //if (ExperimentalGestureless) {
+        //    this.gestures.RemoveGesture("RaiseHand");
+        //}
 
-        this.gestures.GestureRecognized -= GestureDetectedDelegate;
+        //this.gestures.GestureRecognized -= GestureDetectedDelegate;
+        EndSession();
+        listening = false;
     }
 		
 	void gestures_GestureRecognized (object Sender, GestureRecognizedEventArgs e)
 	{
+        if (!listening) { return; }
         // wave stealing
         if (handId != -1 && e.Gesture == "Wave" && StealOnWave) {
             EndSession();
@@ -160,7 +180,8 @@ public class SessionManager : MonoBehaviour {
 	
 	void hands_HandCreate (object Sender, HandCreateEventArgs e)
 	{
-		// Only support one hand at the moment
+        if (!listening) { return; }
+        // Only support one hand at the moment
 		if (handId != -1 && e.UserID != handId) return;
 		handId = e.UserID;
 
@@ -183,6 +204,7 @@ public class SessionManager : MonoBehaviour {
 	
 	void hands_HandUpdate (object Sender, HandUpdateEventArgs e)
 	{
+        if (!listening) { return; }
         lastRawPoint = e.Position;
 		if (RotateToUser) {
 			handPos = RotateHandPoint(e.Position);
@@ -206,7 +228,8 @@ public class SessionManager : MonoBehaviour {
 	
 	void hands_HandDestroy (object Sender, HandDestroyEventArgs e)
 	{
-		handId = -1;
+        if (!listening) { return; }
+        handId = -1;
 		
 		foreach (GameObject obj in new List<GameObject>(Listeners)) {
             if (!obj) continue;

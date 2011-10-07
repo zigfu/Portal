@@ -141,16 +141,18 @@ public class OpenNIContext : MonoBehaviour
 			player.ReadNext();
 		}
 	}
-	
+    public volatile bool UpdateContext = true;
 	// (Since we add OpenNIContext singleton to a container GameObject, we get the MonoBehaviour functionality)
 	public void Update () 
 	{
-        if (null == context) return;
-        if (Mirror != mirrorState) {
-            mirrorCap.SetMirror(Mirror);
-            mirrorState = Mirror;
+        if (UpdateContext) {
+            if (null == context) return;
+            if (Mirror != mirrorState) {
+                mirrorCap.SetMirror(Mirror);
+                mirrorState = Mirror;
+            }
+            this.context.WaitNoneUpdateAll();
         }
-		this.context.WaitNoneUpdateAll();
 	}
 	
 	public void OnApplicationQuit()
