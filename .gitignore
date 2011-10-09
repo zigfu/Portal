@@ -10,3 +10,5 @@ Temp
 
 *.sln
 *.suo
+
+BuildOutput
