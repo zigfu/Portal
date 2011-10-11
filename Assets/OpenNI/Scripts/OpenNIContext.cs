@@ -97,6 +97,9 @@ public class OpenNIContext : MonoBehaviour
 		return Instance.openNode(nt);
 	}
 	
+	public bool error;
+	public string errorMsg;
+	
 	public void Awake()
 	{
         Debug.Log("Initing OpenNI" + (LoadFromXML ? "(" + XMLFilename + ")" : ""));
@@ -105,6 +108,8 @@ public class OpenNIContext : MonoBehaviour
         }
         catch (Exception ex) {
             Debug.LogError("Error opening OpenNI context: " + ex.Message);
+			error = true;
+			errorMsg = ex.Message;
             return;
         }
 
@@ -124,7 +129,14 @@ public class OpenNIContext : MonoBehaviour
 			StartCoroutine(ReadNextFrameFromRecording(player));
 		}
 		
-		this.Depth = openNode(NodeType.Depth) as DepthGenerator;
+		try {
+			this.Depth = openNode(NodeType.Depth) as DepthGenerator;
+		} catch (Exception ex) {
+			error = true;
+			errorMsg = "Error opening depth stream. Please make sure the sensor is connected";
+			Debug.LogError("Error opening depth stream. Is the sensor connected? " + ex.Message);
+			return;
+		}
 		this.mirrorCap = this.Depth.MirrorCapability;
         if (!LoadFromRecording) {
             this.mirrorCap.SetMirror(Mirror);
