@@ -6,7 +6,7 @@ using System.Linq;
 
 public class BuildScene {
     static string scene = "Assets/Portal/_Portal.unity";
-    static string outputPath = "BuildOutput";
+    static string outputPath = "BuildOutput/Portal";
 	
     [MenuItem("Build/Build Portal Executable")]
     static void Build()
