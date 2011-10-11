@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="BaseOutputDir">
+            <Directory Id="dirB5DD0447C6427E47E9B127E5A4EBACEA" Name="Portal">
+                <Directory Id="dir7DA5B577B7FA1BE594C97C986E3BD939" Name="bin">
+                    <Component Id="cmpADA6B143429448B0FB50ADE1D0B146B7" Guid="{79B2EF73-FBCD-4355-AC9D-E80E3A1DE375}">
+                        <File Id="filBD9B4E5B5CCCE813F63CF9E680E735C4" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal.exe" />
+                    </Component>
+                    <Directory Id="dir8478C0AE829FD1E962A6D913BF3574DC" Name="Portal_Data">
+                        <Component Id="cmp16329181DA93C44EFAB1A7259C1C56B3" Guid="{AD5575E8-8CB1-46D2-8B3E-DAF2DA409850}">
+                            <File Id="filE1023400D916D4B3C434AF91BCFB65AE" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\mainData" />
+                        </Component>
+                        <Component Id="cmp0F92E62A310E39B6EDB7D1036368FFF9" Guid="{A1484DE8-C6EF-4EA8-8D8C-A21649FCF60F}">
+                            <File Id="filA15E248B89F068EA32DC5CCC90077F81" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\sharedassets0.assets" />
+                        </Component>
+                        <Directory Id="dir4C59B130A9929D5C6D84E84E9EA1F53F" Name="Managed">
+                            <Component Id="cmpAD6DA3482BB4CCC01A1C511D11759008" Guid="{DD9A1834-951F-4969-A477-BD67BF4B8093}">
+                                <File Id="fil9DA2D134DA469E020007E9453D66C452" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\Assembly-CSharp.dll" />
+                            </Component>
+                            <Component Id="cmp95923627AEDC9899B9A3CA691A905C82" Guid="{F3B279F3-5DA8-4B83-9F91-65719901F0EB}">
+                                <File Id="fil23C2EA2C5840A37F7F9A58078DAE46B9" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\Assembly-UnityScript-firstpass.dll" />
+                            </Component>
+                            <Component Id="cmpF42264289D96DE09C10F7ABA34F077A5" Guid="{F28005D0-13ED-4947-A07F-7B45FE28E18A}">
+                                <File Id="fil11A224DB1A8F61659CC964A28D91CCE7" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\I18N.CJK.dll" />
+                            </Component>
+                            <Component Id="cmp8BCA8046AD1BBD271BFE06367DBA2828" Guid="{D239EAE3-077C-4BC5-9855-D0306FD53DE2}">
+                                <File Id="filA435B1BC05C32C97D7F93ACB6AFA40DA" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\I18N.dll" />
+                            </Component>
+                            <Component Id="cmpB90FD49A4318B63D23F192F1CBD69F2D" Guid="{38135235-066B-4E27-A620-83A334E63E09}">
+                                <File Id="fil24E28C5D375DE0BAA325A89EC16E60CA" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\I18N.MidEast.dll" />
+                            </Component>
+                            <Component Id="cmp925CE979205395B20BD8E942FFDA9B32" Guid="{E5DD9DA8-6507-4F6B-A21B-0AA7D9A390C9}">
+                                <File Id="filDC52E369F32254B9A8EDEA2AB30F2957" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\I18N.Other.dll" />
+                            </Component>
+                            <Component Id="cmp4CF58F3CFC8A26153584A44BDCC70B24" Guid="{659AF852-1A69-43EB-AA89-64F3BF652024}">
+                                <File Id="fil3D68EB4AD09EA7C457A218BC6F79B630" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\I18N.Rare.dll" />
+                            </Component>
+                            <Component Id="cmp1FFF6419D28424C896A862FADDCDBC81" Guid="{09552D6B-E8F1-413A-AB8B-878703ED5B63}">
+                                <File Id="fil6AF6E1F1BC37470B72F934F1BE80A873" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\I18N.West.dll" />
+                            </Component>
+                            <Component Id="cmpED85F91D04E32521969140620F09983E" Guid="{278D1CB6-8013-4A82-AD46-3E2683B14879}">
+                                <File Id="fil99986AEFC0C7689413EBC45F5AF67C0D" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\Ionic.Zip.dll" />
+                            </Component>
+                            <Component Id="cmpD71CA77590AFE05B47C072C217E1D344" Guid="{C2B27A5F-C950-4CB1-99E1-D81A73F6B889}">
+                                <File Id="fil1477A1B8728199D22A44C03CD0D3D217" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\LoaderLib2.dll" />
+                            </Component>
+                            <Component Id="cmp3225C93AB41D0E29212A1EC0A1601C9E" Guid="{8FA389C1-1AB3-4A9C-BC72-A4135AEC007C}">
+                                <File Id="filD6BDF1E9CE715E0FAE7E379CB50E7354" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\Mono.Security.dll" />
+                            </Component>
+                            <Component Id="cmpBFFE88F7D43DCDCF6E2D459774256E78" Guid="{E7EBBA45-8CB4-4C1F-BA29-E697D461C693}">
+                                <File Id="fil2231D3031DB85473EC2B7CC40DBA1542" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\mscorlib.dll" />
+                            </Component>
+                            <Component Id="cmpC618210504ED7E365619F93587EE0E4D" Guid="{9F12B431-D4B8-42D5-B6E5-821B0C0536DF}">
+                                <File Id="filF74C66622F153BB337FF86CEA2E92990" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\OpenNI.Net.dll" />
+                            </Component>
+                            <Component Id="cmpE4E4AAC179F982CD6E6B4FAA29655534" Guid="{06C14F53-868E-44FE-B590-A375EF04794D}">
+                                <File Id="filD47C221F54BE364DE500E7E34F7E04A6" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\System.Configuration.dll" />
+                            </Component>
+                            <Component Id="cmp9C1D3D3482B20A100C4A988801ED225F" Guid="{B9A32DF7-33A5-4A59-9007-BB2C36F9BBAC}">
+                                <File Id="fil1A59CF111404A98BB0552A4EF1C31B3F" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\System.dll" />
+                            </Component>
+                            <Component Id="cmp82A386FDD5FC208B3120EBE72FAB755E" Guid="{1D119BD7-09C2-4230-9218-3AFBB60FA04C}">
+                                <File Id="fil1B8CFA37FAFFF2470BF840F61468E4D3" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\System.Security.dll" />
+                            </Component>
+                            <Component Id="cmpDCF94562D60FFCE8E6190C265C823B0D" Guid="{D2F1DD1A-3EA5-4F5A-901F-AE54AA2A96B4}">
+                                <File Id="filC11E9A88EF2ACC37C3F78195EBBD2AC6" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\System.Xml.dll" />
+                            </Component>
+                            <Component Id="cmp5C2CE1ADF62C2F5AE9F46B860C2C7841" Guid="{F1BF0EE2-5BCD-423E-B53A-3B333EC4A196}">
+                                <File Id="filE6A2ADBEEF1EADDB0B75E074A0B21DB4" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\UnityEngine.dll" />
+                            </Component>
+                            <Component Id="cmpB1CAD5B00D6104713C8D33046EECFE93" Guid="{6E36D918-936E-4977-AA14-DA9456682B41}">
+                                <File Id="filB47A212715E214B78493DFC59D5F1080" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\UnityEngine.dll.mdb" />
+                            </Component>
+                            <Component Id="cmp691592980A45B7DEF1193CF06B388C52" Guid="{4133DD12-55D6-4898-9540-EA8FED284E5E}">
+                                <File Id="fil5BE72F2C1D6C88AC58C009CAFDD1F94B" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Managed\ZigLib.dll" />
+                            </Component>
+                        </Directory>
+                        <Directory Id="dirC7DFB99E9211F41579E4F1F7524CFFC3" Name="Mono">
+                            <Component Id="cmp4DA67594FD4DD71C659604F3FD191B6B" Guid="{8A3EE9D9-44D3-4C44-A2CB-DC005F3B9418}">
+                                <File Id="fil263DCCF0DDB6A893F8C89C49438416FC" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\mono.dll" />
+                            </Component>
+                            <Directory Id="dir3FE98D02E485DC4FC8305C7C8F0F3AA1" Name="etc">
+                                <Directory Id="dir6B09D4342FE2A1B32343408BF5F18870" Name="mono">
+                                    <Component Id="cmp58C50CC7A8B35F4647860DB3D9DD7D4D" Guid="{CA1FDCFF-3162-46C6-8BB9-3C5FF11F5D50}">
+                                        <File Id="fil4F3162A7A1A23DDC24355B8004A8930B" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\browscap.ini" />
+                                    </Component>
+                                    <Component Id="cmpFB6FBDBD34E58C8C2CF35A0F975540A1" Guid="{C16EBCE5-3222-4255-A23B-23755257EE1B}">
+                                        <File Id="fil77C0B2873E89BC3338CD1F2E5A8CB15A" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\config" />
+                                    </Component>
+                                    <Directory Id="dirB84C8090B3F71AAF7667E6A2B872AE04" Name="1.0">
+                                        <Component Id="cmpB25220AFE9991CF4E0BBD4DF350D5B43" Guid="{63B49D4D-14A1-4294-AC80-9BC18ED01BBC}">
+                                            <File Id="fil81FF7879E2F9136B257FC265DAC68FC5" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\1.0\DefaultWsdlHelpGenerator.aspx" />
+                                        </Component>
+                                        <Component Id="cmpD6754FC69B07A6A940969C1F8CB30532" Guid="{AB5B760B-5FA0-4FDD-8DA2-BA5E41946A64}">
+                                            <File Id="fil967E8EBBCBEECC571993A2E3BCA6D359" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\1.0\machine.config" />
+                                        </Component>
+                                    </Directory>
+                                    <Directory Id="dir8CDFDA25D8BBD1D176289D540A0CBAB4" Name="2.0">
+                                        <Component Id="cmp47255CDE77FC403FD31A6C77CDE5C0EE" Guid="{7C734449-8F29-4B18-9C8B-8C33CF7CC745}">
+                                            <File Id="fil07F87DDF51DE3FCFDBB8FCB9C870EE92" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\2.0\DefaultWsdlHelpGenerator.aspx" />
+                                        </Component>
+                                        <Component Id="cmp1C13DC818563B77C562273CE51471EF5" Guid="{D2867373-AA78-4C00-B71F-50354D69B8A4}">
+                                            <File Id="fil50D07CB77CC390696721B66869D02B39" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\2.0\machine.config" />
+                                        </Component>
+                                        <Component Id="cmp783DD8A2E811D62F2AA2E62FDE51EC77" Guid="{25252601-F89A-454C-BB84-2FFF55EFCBB0}">
+                                            <File Id="filB15C9625D495527B6BDD3FE0E4CBBA24" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\2.0\settings.map" />
+                                        </Component>
+                                        <Component Id="cmp018A81DCF5816F9FF1AD6913006925B9" Guid="{A4EB82E0-A1CD-4FB4-9F62-2A382F984087}">
+                                            <File Id="fil25C7BCA0B227F04A2B5E6D91BE6D0E83" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\2.0\web.config" />
+                                        </Component>
+                                        <Directory Id="dirAB40ED648109F1FDD34E10193B4E5477" Name="Browsers">
+                                            <Component Id="cmpB54D7F7E7927FE0A89F305E213E97012" Guid="{0D6CF2DF-8489-49B9-8F17-CC01F0F4361C}">
+                                                <File Id="fil8DFE311CCC430ED03C6A1675D60C109E" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\2.0\Browsers\Compat.browser" />
+                                            </Component>
+                                        </Directory>
+                                    </Directory>
+                                    <Directory Id="dir1FE974E21BB1C76275932D78BC101339" Name="mconfig">
+                                        <Component Id="cmp79594F39D1D5A752E3C6EFFD5D2A8AE2" Guid="{56F8E52C-0A9F-475C-91FC-F15285F948CA}">
+                                            <File Id="fil7F2C9CC3C7A4901C310F3D7133135959" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Mono\etc\mono\mconfig\config.xml" />
+                                        </Component>
+                                    </Directory>
+                                </Directory>
+                            </Directory>
+                        </Directory>
+                        <Directory Id="dir1502AC60902E29FD6DB9BE782724CACB" Name="Resources">
+                            <Component Id="cmpC6032FEED72BED72A3DC011C0B9CDA62" Guid="{6885F623-D93C-4EF8-91F8-BD3C60AA1E35}">
+                                <File Id="filE168A8AC247D1B0D47A48498058E6C10" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal_Data\Resources\unity default resources" />
+                            </Component>
+                        </Directory>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="AllFiles">
+            <ComponentRef Id="cmpADA6B143429448B0FB50ADE1D0B146B7" />
+            <ComponentRef Id="cmp16329181DA93C44EFAB1A7259C1C56B3" />
+            <ComponentRef Id="cmp0F92E62A310E39B6EDB7D1036368FFF9" />
+            <ComponentRef Id="cmpAD6DA3482BB4CCC01A1C511D11759008" />
+            <ComponentRef Id="cmp95923627AEDC9899B9A3CA691A905C82" />
+            <ComponentRef Id="cmpF42264289D96DE09C10F7ABA34F077A5" />
+            <ComponentRef Id="cmp8BCA8046AD1BBD271BFE06367DBA2828" />
+            <ComponentRef Id="cmpB90FD49A4318B63D23F192F1CBD69F2D" />
+            <ComponentRef Id="cmp925CE979205395B20BD8E942FFDA9B32" />
+            <ComponentRef Id="cmp4CF58F3CFC8A26153584A44BDCC70B24" />
+            <ComponentRef Id="cmp1FFF6419D28424C896A862FADDCDBC81" />
+            <ComponentRef Id="cmpED85F91D04E32521969140620F09983E" />
+            <ComponentRef Id="cmpD71CA77590AFE05B47C072C217E1D344" />
+            <ComponentRef Id="cmp3225C93AB41D0E29212A1EC0A1601C9E" />
+            <ComponentRef Id="cmpBFFE88F7D43DCDCF6E2D459774256E78" />
+            <ComponentRef Id="cmpC618210504ED7E365619F93587EE0E4D" />
+            <ComponentRef Id="cmpE4E4AAC179F982CD6E6B4FAA29655534" />
+            <ComponentRef Id="cmp9C1D3D3482B20A100C4A988801ED225F" />
+            <ComponentRef Id="cmp82A386FDD5FC208B3120EBE72FAB755E" />
+            <ComponentRef Id="cmpDCF94562D60FFCE8E6190C265C823B0D" />
+            <ComponentRef Id="cmp5C2CE1ADF62C2F5AE9F46B860C2C7841" />
+            <ComponentRef Id="cmpB1CAD5B00D6104713C8D33046EECFE93" />
+            <ComponentRef Id="cmp691592980A45B7DEF1193CF06B388C52" />
+            <ComponentRef Id="cmp4DA67594FD4DD71C659604F3FD191B6B" />
+            <ComponentRef Id="cmp58C50CC7A8B35F4647860DB3D9DD7D4D" />
+            <ComponentRef Id="cmpFB6FBDBD34E58C8C2CF35A0F975540A1" />
+            <ComponentRef Id="cmpB25220AFE9991CF4E0BBD4DF350D5B43" />
+            <ComponentRef Id="cmpD6754FC69B07A6A940969C1F8CB30532" />
+            <ComponentRef Id="cmp47255CDE77FC403FD31A6C77CDE5C0EE" />
+            <ComponentRef Id="cmp1C13DC818563B77C562273CE51471EF5" />
+            <ComponentRef Id="cmp783DD8A2E811D62F2AA2E62FDE51EC77" />
+            <ComponentRef Id="cmp018A81DCF5816F9FF1AD6913006925B9" />
+            <ComponentRef Id="cmpB54D7F7E7927FE0A89F305E213E97012" />
+            <ComponentRef Id="cmp79594F39D1D5A752E3C6EFFD5D2A8AE2" />
+            <ComponentRef Id="cmpC6032FEED72BED72A3DC011C0B9CDA62" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>
