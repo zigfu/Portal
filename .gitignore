@@ -14,3 +14,8 @@ Temp
 BuildOutput
 Installer\Windows\PortalInstaller\bin
 Installer\Windows\PortalInstaller\obj
+
+*.wixpdb
+Installer/Windows/PortalInstaller/bin/
+Installer/Windows/ZigFuBundle/ZigFuDevBundle.exe
+Installer/Windows/PortalInstaller/SetupWithPrereqs/bin
