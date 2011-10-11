@@ -10,5 +10,7 @@ Temp
 
 *.sln
 *.suo
-
+*.wixobj
 BuildOutput
+Installer\Windows\PortalInstaller\bin
+Installer\Windows\PortalInstaller\obj
