@@ -19,3 +19,4 @@ Installer\Windows\PortalInstaller\obj
 Installer/Windows/PortalInstaller/bin/
 Installer/Windows/ZigFuBundle/ZigFuDevBundle.exe
 Installer/Windows/PortalInstaller/SetupWithPrereqs/bin
+Installer/Windows/PortalInstaller/Files.wxs
