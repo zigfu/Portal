@@ -24,6 +24,7 @@
               <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
               <!-- these shortcuts are a nasty hack, but they work (ideally I could add them to the auto-generated 
                    output from heat.exe at Files.wxs (ideally they should be under the File element containing the Portal exe) -->
+              <!-- this is going to change on the next major version of WIX -->
               <Shortcut Id="startmenuPortal" Directory="ProgramMenuDir" Name="Portal" Target="[BaseOutputDir]\Portal\bin\Portal.exe"/>
               <Shortcut Id="desktopPortal" Directory="DesktopFolder" Name="Portal" Target="[BaseOutputDir]\Portal\bin\Portal.exe"/>
             </Component>
