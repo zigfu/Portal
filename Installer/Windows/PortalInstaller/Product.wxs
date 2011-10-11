@@ -9,7 +9,22 @@
       <!-- define base output dir -->
       <Directory Id="LocalAppDataFolder">
         <Directory Id="BaseOutputDir" Name="ZigFu">
-
+          <Directory Id="PortalBaseDir" Name="Portal">
+            <Directory Id="BinariesDir" Name="bin">
+              <Component Id="Shortcuts" Guid="1CF5E239-71B4-43E5-B566-0BFF6A0D5C4B">
+                <File Id="MainExecutable" KeyPath="yes" Source="$(var.PortalOut)\bin\Portal.exe">
+                <!-- these shortcuts are a nasty hack, but they work (ideally I could add them to the auto-generated 
+                   output from heat.exe at Files.wxs (ideally they should be under the File element containing the Portal exe) -->
+                <!-- this is going to change on the next major version of WIX -->
+                <Shortcut Id="startmenuPortal" Directory="ProgramMenuDir" Name="Portal"
+                          WorkingDirectory="BinariesDir" Advertise="yes"/>
+                <Shortcut Id="desktopPortal" Directory="DesktopFolder" Name="Portal"
+                          WorkingDirectory="BinariesDir" Advertise="yes"/>
+                </File>
+              </Component>
+              
+            </Directory>
+          </Directory>
         </Directory>
       </Directory>
 
@@ -22,11 +37,6 @@
             <Component Id="ProgramMenuDir" Guid="1C3983DB-B982-48CB-845F-8E2F4D1F85F2">
               <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
               <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
-              <!-- these shortcuts are a nasty hack, but they work (ideally I could add them to the auto-generated 
-                   output from heat.exe at Files.wxs (ideally they should be under the File element containing the Portal exe) -->
-              <!-- this is going to change on the next major version of WIX -->
-              <Shortcut Id="startmenuPortal" Directory="ProgramMenuDir" Name="Portal" Target="[BaseOutputDir]\Portal\bin\Portal.exe"/>
-              <Shortcut Id="desktopPortal" Directory="DesktopFolder" Name="Portal" Target="[BaseOutputDir]\Portal\bin\Portal.exe"/>
             </Component>
           </Directory>
         </Directory>
@@ -37,6 +47,7 @@
 		<Feature Id="ProductFeature" Title="Portal" Level="1">
 			<ComponentGroupRef Id="AllFiles" />
       <ComponentRef Id="ProgramMenuDir" />
+      <ComponentRef Id="Shortcuts" />
 			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
 			<ComponentGroupRef Id="Product.Generated" />
 		</Feature>

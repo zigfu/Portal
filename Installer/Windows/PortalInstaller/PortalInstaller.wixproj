@@ -34,11 +34,15 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fix_missing_compref.py" />
+    <Content Include="HeatTransform.xsl" />
     <Content Include="License.rtf" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <PreBuildEvent>"$(Wix)bin\heat.exe" dir $(ProjectDir)..\..\..\BuildOutput\Portal -scom -sreg -sfrag -dr BaseOutputDir -var var.PortalOut -cg AllFiles -gg -out $(ProjectDir)Files.wxs</PreBuildEvent>
+    <PreBuildEvent>"$(Wix)bin\heat.exe" dir $(ProjectDir)..\..\..\BuildOutput\Portal -scom -sreg -sfrag -dr BaseOutputDir -var var.PortalOut -cg AllFiles -gg -t ..\HeatTransform.xsl -out $(ProjectDir)Files.wxs
+
+python $(ProjectDir)fix_missing_compref.py "$(ProjectDir)Files.wxs"</PreBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
