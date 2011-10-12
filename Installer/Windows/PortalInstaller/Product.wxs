@@ -5,6 +5,9 @@
 
 		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
 
+    <Icon Id="icon.exe" SourceFile="icon.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="icon.exe" />
+
     <Directory Id="TARGETDIR" Name="SourceDir">
       <!-- define base output dir -->
       <Directory Id="LocalAppDataFolder">
@@ -17,9 +20,9 @@
                    output from heat.exe at Files.wxs (ideally they should be under the File element containing the Portal exe) -->
                 <!-- this is going to change on the next major version of WIX -->
                 <Shortcut Id="startmenuPortal" Directory="ProgramMenuDir" Name="Portal"
-                          WorkingDirectory="BinariesDir" Advertise="yes"/>
+                          WorkingDirectory="BinariesDir" Advertise="yes" Icon="icon.exe"/>
                 <Shortcut Id="desktopPortal" Directory="DesktopFolder" Name="Portal"
-                          WorkingDirectory="BinariesDir" Advertise="yes"/>
+                          WorkingDirectory="BinariesDir" Advertise="yes" Icon="icon.exe"/>
                 </File>
               </Component>
               
@@ -42,8 +45,13 @@
         </Directory>
       </Directory>
     </Directory>
+    
     <UIRef Id="WixUI_Minimal"/>
     <WixVariable Id="WixUILicenseRtf" Value="license.rtf"/>
+    <WixVariable Id="WixUIBannerBmp" Value="neonBG.bmp"/>
+    <WixVariable Id="WixUIDialogBmp" Value="neonFirstScreen.bmp"/>
+    
+    
 		<Feature Id="ProductFeature" Title="Portal" Level="1">
 			<ComponentGroupRef Id="AllFiles" />
       <ComponentRef Id="ProgramMenuDir" />

@@ -3,6 +3,7 @@
 <Bundle Name="ZigFu OpenNI Dev Bundle" Version="1.0.0.0" Manufacturer="ZigFu" UpgradeCode="DB47C37E-03DC-43D8-B770-C2C9D82CA305">
 		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense" />
 		<WixVariable Id="WixStdbaLicenseRtf" Value="License.rtf" />
+	    <WixVariable Id="WixStdbaLogo" Value="neonsquare.bmp"/>
 		<Chain>
 			<MsiPackage Id="OpenNI" SourceFile="openni-win32-1.3.4.3-dev.msi" />
 			<MsiPackage SourceFile="nite-win32-1.4.2.4-dev.msi" />
