@@ -20,3 +20,12 @@ Installer/Windows/PortalInstaller/bin/
 Installer/Windows/ZigFuBundle/ZigFuDevBundle.exe
 Installer/Windows/PortalInstaller/SetupWithPrereqs/bin
 Installer/Windows/PortalInstaller/Files.wxs
+Installer/Windows/Refresh_Environment/Debug
+Installer/Windows/Refresh_Environment/ipch
+*.sdf
+*.user
+*.filters
+*.opensdf
+*.pdb
+*.tlog
+Installer/Windows/Refresh_Environment/Release
