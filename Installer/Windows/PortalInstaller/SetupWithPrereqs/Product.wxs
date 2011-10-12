@@ -9,6 +9,7 @@
       <MsiPackage SourceFile="sensor-win32-5.0.4.3-redist.msi" />
       <MsiPackage SourceFile="SensorKinect-Win-OpenSource32-5.0.3.4.msi" />
       <MsiPackage SourceFile="..\bin\Portal.msi" />
+      <ExePackage SourceFile="Refresh_Environment.exe" Name="Refresh_Environment.exe" PerMachine="yes" Permanent="no" Compressed="yes" Cache="no" Vital="no" Protocol="none" />
     </Chain>
   </Bundle>
 </Wix>
