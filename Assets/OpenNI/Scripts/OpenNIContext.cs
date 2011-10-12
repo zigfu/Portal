@@ -138,11 +138,16 @@ public class OpenNIContext : MonoBehaviour
 			return;
 		}
 		this.mirrorCap = this.Depth.MirrorCapability;
+        SetMirroring();
+	}
+
+    public void SetMirroring()
+    {
         if (!LoadFromRecording) {
             this.mirrorCap.SetMirror(Mirror);
             mirrorState = Mirror;
         }
-	}
+    }
 	
 	IEnumerator ReadNextFrameFromRecording(Player player)
 	{

@@ -105,6 +105,7 @@ public class ZigItem : MonoBehaviour {
     {
         if (cleanupProcessLaunch) {
             OpenNIContext.Instance.UpdateContext = true;
+            OpenNIContext.Instance.SetMirroring();
             SessionManager.Instance.StartListening();
             cleanupProcessLaunch = false;
         }
