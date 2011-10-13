@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="ed31d10e-5933-44a2-833b-a0278cbbc10c" Name="ZigFu Portal" Language="1033" Version="1.0.0.0" Manufacturer="ZigFu" UpgradeCode="97a671a7-ab73-49fe-a237-37b6a331747d">
+	<Product Id="ed31d10e-5933-44a2-833b-a0278cbbc10c" Name="ZigFu Portal" Language="1033" Version="1.0.1.0" Manufacturer="ZigFu" UpgradeCode="97a671a7-ab73-49fe-a237-37b6a331747d">
 		<Package InstallerVersion="200" Compressed="yes" Id="*" Description="ZigFu Portal Installer"/>
 
 		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
