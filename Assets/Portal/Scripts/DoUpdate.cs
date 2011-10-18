@@ -7,7 +7,7 @@ using System;
 public class DoUpdate : MonoBehaviour {
 
     public float CurrentVersion = 0.3f;
-
+    public bool UseTestURL = false;
 	// Use this for initialization
 	void Start () {
         //check for update only when not running in editor
@@ -18,12 +18,36 @@ public class DoUpdate : MonoBehaviour {
 
     // TODO: toggle according to OS
     // TODO: maybe make getting this URL part of ziglib?
-    private string GetVersionURL = "http://zigfu.com/portal/version/win";
+    //private string GetServerVersionURL = "http://zigfu.com/portal/version/win";
+    private string GetServerVersionURL()
+    {
+        if (!UseTestURL) {
+            return "http://zigfu.com/portal/version/win";
+        }
+        else {
+            return "http://test.zigfu.com/static/update_test/win";
+        }
+    }
+
+    const string OLD_BIN_DIR = "bin.old";
 
     IEnumerator CheckForUpdate()
     {
-        WWW getVersionReq = new WWW(GetVersionURL);
-        print("Getting portal version from " + GetVersionURL);
+        // check for remains of an old update
+        var di = new DirectoryInfo(ZigLib.Utility.GetMainModuleDirectory());
+        string oldBinDir = GetOldBinDir(di);
+        if (Directory.Exists(oldBinDir)) {
+            print("Deleting leftovers from previous update");
+            try {
+                Directory.Delete(oldBinDir, true);
+            }
+            catch (IOException) {
+                Debug.LogWarning("Failed to delete " + oldBinDir);
+            }
+        }
+
+        WWW getVersionReq = new WWW(GetServerVersionURL());
+        print("Getting portal version from " + GetServerVersionURL());
         yield return getVersionReq;
         string download_url;
         double version;
@@ -43,7 +67,7 @@ public class DoUpdate : MonoBehaviour {
         }
         print("download finished, size: " + GetPortalRequest.bytes.Length + ", first bytes: " + BitConverter.ToString(GetPortalRequest.bytes, 0, 8));
         //print("first few bytes: " + BitConverter.To
-        var di = new DirectoryInfo(ZigLib.Utility.GetMainModuleDirectory());
+        
         string TempExtractedPath = Path.Combine(di.Parent.FullName, "new_version");
         print(string.Format("downloading and extracting zip to " + TempExtractedPath));
         if (Directory.Exists(TempExtractedPath)) {
@@ -58,10 +82,15 @@ public class DoUpdate : MonoBehaviour {
                 zip.ExtractAll(TempExtractedPath);
             }
         }
-        string TempRunningDir = Path.Combine(di.Parent.FullName, "bin.old");
+        string TempRunningDir = GetOldBinDir(di);
         print(string.Format("moving current directory ({0}) to {1}", di.FullName, TempRunningDir));
         ZigLib.Utility.MoveDirWithLockedFile(di.FullName, TempRunningDir);
         print(string.Format("moving temp directory {0} to binary directory {1}", TempExtractedPath, di.FullName));
         ZigLib.Utility.MoveDirWithLockedFile(TempExtractedPath, di.FullName);
+    }
+
+    private static string GetOldBinDir(DirectoryInfo di)
+    {
+        return Path.Combine(di.Parent.FullName, OLD_BIN_DIR);
     }
 }
