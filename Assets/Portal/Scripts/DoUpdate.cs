@@ -10,7 +10,10 @@ public class DoUpdate : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        //check for update only when not running in editor
+#if !UNITY_EDITOR
         StartCoroutine(CheckForUpdate());
+#endif
 	}
 
     // TODO: toggle according to OS
