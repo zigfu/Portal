@@ -36,7 +36,7 @@ public class ZigsFeed : MonoBehaviour {
 	{
 		WWW req = new WWW(url);
 		yield return req;
-		print(req.text);
+		print(url);
 		foreach (RemoteZig zig in ZigLib.ZigLib.EnumerateRemoteZigs(req.text)) {
 			ZigItem zi = InitZig();
 			zi.InitRemote(zig);
