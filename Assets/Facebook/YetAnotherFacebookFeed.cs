@@ -32,6 +32,8 @@ public class YetAnotherFacebookFeed : MonoBehaviour
             Debug.LogWarning("Cant record and playback at the same time. Playing back...");
             MakeOfflineRecording = false;
         }
+		
+		Launch(token);
     }
 
     public void Launch(string token)
@@ -86,11 +88,11 @@ public class YetAnotherFacebookFeed : MonoBehaviour
         ArrayList feedItems = (ArrayList)queryResult["data"];
         foreach (Hashtable item in feedItems) {
             Transform childTransform = Instantiate(facebookItem) as Transform;
-            childTransform.localRotation = Quaternion.identity;
-            childTransform.GetComponent<FacebookItem>().Init(item, token);
-            //childTransform.gameObject.SendMessage("FeedItem_Init", item, SendMessageOptions.DontRequireReceiver);
+            //yield return StartCoroutine(childTransform.GetComponent<FacebookItem>().Init(item, token));
+			childTransform.GetComponent<FacebookItem>().Init(item, token);
             SendMessage("Menu_Add", childTransform);
-            yield return null;
+			childTransform.localRotation = Quaternion.identity;
+            //yield return null;
         }
         fetching = false;
     }

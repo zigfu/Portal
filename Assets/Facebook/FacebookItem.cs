@@ -67,7 +67,6 @@ public class FacebookItem : MonoBehaviour {
 
         Hashtable from = item["from"] as Hashtable;
         
-
         // Create menuitemheader & set text fields
         header = Instantiate(FacebookItemHeader) as Transform;
         header.Find("NameText").GetComponent<TextMesh>().text = from["name"] as string;
@@ -75,18 +74,22 @@ public class FacebookItem : MonoBehaviour {
        
         // add the item to our submenu (before loading images/comments)
         SendMessage("Menu_Add", header);
+		header.localRotation = Quaternion.identity;
 
         likes = Instantiate(FacebookItemLikes) as Transform;
         likes.Find("LikesText").GetComponent<TextMesh>().text       = string.Format("{0} Likes",    likesCount);
         likes.Find("CommentsText").GetComponent<TextMesh>().text    = string.Format("{0} Comments", commentsCount);
         SendMessage("Menu_Add", likes);
+		likes.localRotation = Quaternion.identity;
 
+		//yield return null; // this should solve the annoying race between moving an item and calcing bounds
         GetComponent<ExpandToBounds>().Background = transform.Find("BackgroundContainer");
         GetComponent<ExpandToBounds>().ExpandToCover(transform.Find("ItemsContainer").gameObject);
 
         // load thumbnail
         StartCoroutine(FBUtils.ImageFromIdAsync(from["id"] as string, header.Find("Thumbnail").gameObject.renderer));
         //StartCoroutine(LoadImageAsync(header.Find("Thumbnail").gameObject.renderer, FBUtils.ImageFromItem(item)));
+		//yield break;
     }
 
     string offsetString = "&offset={0}";
@@ -122,16 +125,9 @@ public class FacebookItem : MonoBehaviour {
             commentItem.Find("NameText").GetComponent<TextMesh>().text = (comment["from"] as Hashtable)["name"] as string;
             commentItem.Find("ContentText").GetComponent<TextMesh>().text = TextTools.WordWrap(comment["message"] as string, maxTextLength - 10);
 
-            /*
-            // TODO: something with like number?
-            int likes = 0;
-            if (comment.ContainsKey("likes")) {
-                likes = (int)(double)comment["likes"];
-            }
-             * */
-
             // add the item to our submenu (before loading images/comments)
             SendMessage("Menu_Add", commentItem);
+			commentItem.localRotation = Quaternion.identity;
 
             // load thumbnail
             StartCoroutine(LoadImageAsync(commentItem.Find("Thumbnail").gameObject.renderer, FBUtils.ImageFromItem(comment)));
