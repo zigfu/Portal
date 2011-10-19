@@ -55,10 +55,21 @@ public class Fader : MonoBehaviour {
         MoveTo(SessionManager.FocusPoint, initialValue);
         value = initialValue;
     }
-
+	
+	bool edge;
     public void Hand_Update(Vector3 pos)
     {
         value = GetValue(pos);
+	
+		// TODO: wont work as expected if fader moves from one edge to the other in a single frame
+		if (Mathf.Approximately(value, 0) || Mathf.Approximately(value, 1))	{
+			if (!edge) {	
+				edge = true;
+				SendMessage("Fader_Edge", value, SendMessageOptions.DontRequireReceiver);
+			}
+		} else {
+			edge = false;
+		}
     }
 
     void Hand_Destroy()
