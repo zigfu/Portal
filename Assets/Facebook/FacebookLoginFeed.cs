@@ -38,9 +38,12 @@ public class FacebookLoginEntry
 
 public class FacebookLoginFeed : MonoBehaviour {
 
-    public Transform item;
+    public FacebookLoginItem item;
     List<FacebookLoginEntry> users = new List<FacebookLoginEntry>();
     public bool OfflineLogin;
+	public YetAnotherFacebookFeed feed;
+	public Navigator navigator;
+	public bool ShowLoginUI = false;
 
 	// Use this for initialization
 	void Start () {
@@ -76,9 +79,11 @@ public class FacebookLoginFeed : MonoBehaviour {
 
     void AddToMenu(FacebookLoginEntry entry)
     {
-        Transform newObj = Instantiate(item) as Transform;
-        newObj.GetComponent<FacebookLoginItem>().Init(entry);
-        SendMessage("Menu_Add", newObj);
+        FacebookLoginItem newObj = Instantiate(item) as FacebookLoginItem;
+        newObj.Init(entry);
+        SendMessage("Menu_Add", newObj.transform);
+		newObj.transform.localRotation = Quaternion.identity;
+		newObj.transform.localPosition = Vector3.zero;
     }
 
     void FacebookLogin_BadToken()
@@ -110,7 +115,67 @@ public class FacebookLoginFeed : MonoBehaviour {
             return;
         }
         print("Trying to login as user " + item.GetComponent<FacebookLoginItem>().Entry.DisplayName);
-        // Shlomo: Just commented this out
-		// StartCoroutine(GetComponent<FacebookLogin>().CheckToken(item.GetComponent<FacebookLoginItem>().Entry.AccessToken));
+		StartCoroutine(CheckToken(item.GetComponent<FacebookLoginItem>().Entry.AccessToken));
     }
+	
+	public IEnumerator CheckToken(string access_token)
+    {
+        WWW req = new WWW(@"https://graph.facebook.com/me?access_token=" + access_token);
+        yield return req;
+        Hashtable result = (Hashtable)JSON.JsonDecode(req.text);
+
+        if (result.ContainsKey("error"))
+        {
+			LoginError(result);
+        }
+        else
+        {
+            LoginSuccess(access_token, result["id"] as string, result["name"] as string, result["username"] as string);
+        }
+		checking = false;
+    }
+	
+	private void LoginError(Hashtable result)
+	{
+		Debug.LogError("Error logging in: " + result);
+		// TODO: Error dialog?
+	}
+	
+    private void LoginSuccess(string access_token, string user_id, string displayName, string username)
+    {
+		print("Facebook access token is valid (" + displayName + ")");
+		Hashtable succesParams = new Hashtable() { { "token", access_token }, { "name",  displayName}, {"id", user_id}, {"username", username} };
+		FacebookLogin_Success(succesParams);
+        feed.Launch(access_token, displayName, user_id);
+		navigator.NavigateTo(feed.transform);
+    }
+	
+	string tokenOmercy = "";
+	bool checking;
+	void OnGUI()
+	{
+		if (ShowLoginUI && GetComponent<HandPointControl>().IsActive) {
+			GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, 20, 400, 60));
+			GUILayout.BeginVertical();
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Token");
+			tokenOmercy = GUILayout.TextField(tokenOmercy);
+			GUILayout.EndHorizontal();
+			if (checking) {
+				GUILayout.Label("Checking...");
+			} else {
+				if (GUILayout.Button("Add")) {
+					checking = true;
+					StartCoroutine(CheckToken(tokenOmercy));
+				}
+			}
+			GUILayout.EndVertical();
+			GUILayout.EndArea();
+		}
+		
+		if (Event.current.Equals(Event.KeyboardEvent("f2"))) {
+			ShowLoginUI = !ShowLoginUI;
+			Event.current.Use();
+		}
+	}
 }

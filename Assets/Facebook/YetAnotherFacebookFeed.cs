@@ -33,14 +33,26 @@ public class YetAnotherFacebookFeed : MonoBehaviour
             MakeOfflineRecording = false;
         }
 		
-		Launch(token);
+		Launch(token, "test", null);
     }
-
-    public void Launch(string token)
+	
+	public void Launch(FacebookLoginEntry entry)
+	{
+		Launch(entry.AccessToken, entry.DisplayName, entry.UserID);	
+	}
+	
+    public void Launch(string token, string name, string id)
     {
         this.token = token;
         nextURL = URL + token;
         StartCoroutine("fetch");
+		
+		// init the MST
+		MSTScreen mst = GetComponent<MSTScreen>();
+		if (mst) {
+			mst.Title = name;
+			StartCoroutine(FBUtils.ImageFromIdAsync(id, mst.Icon));
+		}
     }
 
     int PageNumber;

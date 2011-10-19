@@ -24,19 +24,26 @@ public class FBUtils {
         return ImageFromFacebookID(fromIDString);
     }
     
-    public static IEnumerator ImageFromIdAsync(string fromIDString, Renderer target)
-    {
+
+	public static IEnumerator ImageFromIdAsync(string fromIDString, Renderer renderer)
+	{
+		return ImageFromIdAsync(fromIDString, renderer.material);
+	}
+
+	
+	public static IEnumerator ImageFromIdAsync(string fromIDString, Material mat)
+	{
         if (Offline) {
             string[] sizeStr = System.IO.File.ReadAllLines("Offline\\Images\\" + fromIDString + "_size");
             Texture2D img = new Texture2D(int.Parse(sizeStr[0]), int.Parse(sizeStr[1]));
             img.LoadImage(System.IO.File.ReadAllBytes("Offline\\Images\\" + fromIDString));
-            target.material.mainTexture = img;
+            mat.mainTexture = img;
             yield break;
         }
 
         WWW req = ImageFromFacebookID(fromIDString);
         yield return req;
-        target.material.mainTexture = req.texture;
+        mat.mainTexture = req.texture;
 
         if (Recording) {
             System.IO.File.WriteAllText("Offline\\Images\\" + fromIDString + "_size", req.texture.width.ToString() + "\r\n" + req.texture.height);

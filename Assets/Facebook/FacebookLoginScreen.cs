@@ -62,7 +62,8 @@ public class FacebookLoginScreen : MonoBehaviour {
     public void FacebookLogin_Success(Hashtable omercy)
     {
         showLogin = false;
-        feed.Launch((string) omercy["token"]);
+		FacebookLoginEntry entry = FacebookLoginEntry.LoadFromJSON(omercy);
+        feed.Launch(entry);
         transform.parent.GetComponent<NavigatorController>().NavigateToByName("FacebookFeed");
     }
 
