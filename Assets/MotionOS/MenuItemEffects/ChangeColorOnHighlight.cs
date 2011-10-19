@@ -27,12 +27,12 @@ public class ChangeColorOnHighlight : MonoBehaviour {
 		}
 	}
 	
-	void MenuItem_Activate()
+	void MenuItem_Highlight()
 	{
 		targetColor = highlightColor;
 	}
 	
-	void MenuItem_Deactivate()
+	void MenuItem_Unhighlight()
 	{
 		targetColor = defaultColor;
 	}

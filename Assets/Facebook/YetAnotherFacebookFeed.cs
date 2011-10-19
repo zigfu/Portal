@@ -33,7 +33,7 @@ public class YetAnotherFacebookFeed : MonoBehaviour
             MakeOfflineRecording = false;
         }
 		
-		Launch(token, "test", null);
+		//Launch(token, "test", null);
     }
 	
 	public void Launch(FacebookLoginEntry entry)
@@ -45,6 +45,7 @@ public class YetAnotherFacebookFeed : MonoBehaviour
     {
         this.token = token;
         nextURL = URL + token;
+		SendMessage("Menu_Clear");
         StartCoroutine("fetch");
 		
 		// init the MST

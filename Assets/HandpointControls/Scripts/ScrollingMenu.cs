@@ -184,6 +184,11 @@ public class ScrollingMenu : MonoBehaviour
 		RepositionItems();
 	}
 	
+	void Menu_Clear()
+	{
+		Clear();
+	}
+	
     public void Add(Transform item)
     {
         item.parent = itemsContainer.transform;
@@ -283,6 +288,7 @@ public class ScrollingMenu : MonoBehaviour
 			pushslideFader.MoveTo(gameObject.GetComponent<PushDetector>().ClickPosition, 0.5f);
 			centerIndexBase = CenterIndex;
 			pushSliding = true;
+			SendMessage("Menu_PushSlideStart", SendMessageOptions.DontRequireReceiver);
 		}
 	}
 	
@@ -291,6 +297,7 @@ public class ScrollingMenu : MonoBehaviour
 		if (PushSlide) {
 			pushSliding = false;
 			ActiveItemIndex = Mathf.FloorToInt(CenterIndex);
+			SendMessage("Menu_PushSlideStop", SendMessageOptions.DontRequireReceiver);
 		}
 	}
 	

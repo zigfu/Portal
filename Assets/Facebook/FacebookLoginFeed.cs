@@ -82,8 +82,6 @@ public class FacebookLoginFeed : MonoBehaviour {
         FacebookLoginItem newObj = Instantiate(item) as FacebookLoginItem;
         newObj.Init(entry);
         SendMessage("Menu_Add", newObj.transform);
-		newObj.transform.localRotation = Quaternion.identity;
-		newObj.transform.localPosition = Vector3.zero;
     }
 
     void FacebookLogin_BadToken()

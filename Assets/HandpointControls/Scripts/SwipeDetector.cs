@@ -17,6 +17,9 @@ public class SwipeDetector : MonoBehaviour {
 	
 	public bool IsSwiped { get; private set; }
 	float swipedValue;
+		
+	public bool PushProtection = true;
+	bool pushed;
 	
 	// Use this for initialization
 	void Awake () {
@@ -44,8 +47,8 @@ public class SwipeDetector : MonoBehaviour {
 		swipeFader.MoveToContain(pos);
         swipeFader.Hand_Update(pos);
 	
-		// quick out if in cooldown
-		if (SessionManager.Instance.CoolingDown) return;
+		// quick out if in cooldown, or if pushed
+		if (SessionManager.Instance.CoolingDown || pushed) return;
 		
 		// swipe logic
 		if (!IsSwiped) {
@@ -80,6 +83,18 @@ public class SwipeDetector : MonoBehaviour {
 			SendMessage("SwipeDetector_Release", SendMessageOptions.DontRequireReceiver);
 			IsSwiped = false;
 		}
+	}
+	
+	void PushDetector_Push()
+	{
+		if (PushProtection) {
+			pushed = true;
+		}
+	}
+	
+	void PushDetector_Release()
+	{
+		pushed = false;
 	}
 	
 	string FaderValueToEventName(float val, SwipeDetectorDirection dir)
