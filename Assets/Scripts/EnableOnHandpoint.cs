@@ -6,7 +6,7 @@ public class EnableOnHandpoint : MonoBehaviour {
     public Transform[] targets;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         Hand_Destroy();
 	}
 	
