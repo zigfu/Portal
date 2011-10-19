@@ -106,7 +106,7 @@ public class ZigItem : MonoBehaviour {
         if (cleanupProcessLaunch) {
             OpenNIContext.Instance.UpdateContext = true;
             OpenNIContext.Instance.SetMirroring();
-            SessionManager.Instance.StartListening();
+            OpenNISessionManager.Instance.StartListening();
             cleanupProcessLaunch = false;
         }
     }
@@ -117,7 +117,7 @@ public class ZigItem : MonoBehaviour {
         //TODO: hack o'mercy
         yield return null;
 		print("Launching zig...");
-        SessionManager.Instance.StopListening();
+        OpenNISessionManager.Instance.StopListening();
         OpenNIContext.Instance.UpdateContext = false;
         //try {
         //    installedZig.Launch(OpenNIContext.Context, isFullscreen, );

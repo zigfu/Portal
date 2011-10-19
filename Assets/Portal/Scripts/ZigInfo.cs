@@ -27,7 +27,7 @@ public class ZigInfo : MonoBehaviour {
         if (cleanupProcessLaunch) {
             OpenNIContext.Instance.UpdateContext = true;
             OpenNIContext.Instance.SetMirroring();
-            SessionManager.Instance.StartListening();
+            OpenNISessionManager.Instance.StartListening();
             cleanupProcessLaunch = false;
         }
 	}
@@ -108,7 +108,7 @@ public class ZigInfo : MonoBehaviour {
         //finally {
         //    SessionManager.Instance.StartListening();
         //}
-        SessionManager.Instance.StopListening();
+        OpenNISessionManager.Instance.StopListening();
         OpenNIContext.Instance.UpdateContext = false;
 
         installedZig.Launch(OpenNIContext.Context, delegate(object s, System.EventArgs e) {
