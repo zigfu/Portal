@@ -48,7 +48,7 @@ public class SwipeDetector : MonoBehaviour {
         swipeFader.Hand_Update(pos);
 	
 		// quick out if in cooldown, or if pushed
-		if (SessionManager.Instance.CoolingDown || pushed) return;
+		if (OpenNISessionManager.Instance.CoolingDown || pushed) return;
 		
 		// swipe logic
 		if (!IsSwiped) {
