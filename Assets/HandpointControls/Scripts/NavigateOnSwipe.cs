@@ -15,9 +15,13 @@ public class NavigateOnSwipe : MonoBehaviour {
 	public bool Up = false;
 	public bool Down = false;
 	
+	public bool Fader0 = false;
+	public bool Fader1 = false;
+	
 	public Navigator navigator;
 	public NavigateAction action;
 	public Transform target;
+	
 	
     void Start()
     {
@@ -25,7 +29,7 @@ public class NavigateOnSwipe : MonoBehaviour {
             gameObject.AddComponent<SwipeDetector>();
         }
     }
-
+	
     void DoYourThing()
     {
 		if (!navigator) return;
@@ -65,6 +69,17 @@ public class NavigateOnSwipe : MonoBehaviour {
 	{
 		if (Down) {
             DoYourThing();
+		}
+	}
+	
+	void Fader_Edge(float val)
+	{
+		if (Mathf.Approximately(val, 0) && Fader0) {
+			DoYourThing();
+		}
+		
+		if (Mathf.Approximately(val, 1) && Fader1) {
+			DoYourThing();
 		}
 	}
 } 
