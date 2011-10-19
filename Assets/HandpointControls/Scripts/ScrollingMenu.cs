@@ -82,7 +82,12 @@ public class ScrollingMenu : MonoBehaviour
                 Unhighlight();
                 HighlightItem(clamped);
             }
-
+			
+			// OOB
+			if (clamped != value) {
+				SendMessage("Menu_OutOfBounds", (value > 0), SendMessageOptions.DontRequireReceiver);
+			}
+			
             // see if we should scroll our sliding window
             if (activeItemIndex < firstOnScreenIndex) {
                 firstOnScreenIndex = activeItemIndex;
