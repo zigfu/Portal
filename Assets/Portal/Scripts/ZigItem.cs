@@ -18,6 +18,7 @@ public class ZigItem : MonoBehaviour {
 	public RemoteZig remoteZig;
 	string zigUri;
 	bool installing;
+	SceneZig sceneZig;
 	
 	public Material Icon {
 		get {
@@ -25,13 +26,18 @@ public class ZigItem : MonoBehaviour {
 		}
 	}
 	
+	void Init(string name, string developer, string description, string actionLabel)
+	{
+		transform.Find("NameLabel").GetComponent<TextMesh>().text = name;
+		transform.Find("DeveloperLabel").GetComponent<TextMesh>().text = developer;
+		transform.Find("DescriptionLabel").GetComponent<TextMesh>().text = description;
+		transform.Find("ActionLabel").GetComponent<TextMesh>().text = actionLabel;
+	}
+	
 	public void Init(IZig zig)
 	{
 		SharedMetadata md = zig.Metadata;
-		transform.Find("NameLabel").GetComponent<TextMesh>().text = md.Name;
-		transform.Find("DeveloperLabel").GetComponent<TextMesh>().text = md.Developer;
-		transform.Find("DescriptionLabel").GetComponent<TextMesh>().text = md.Description;
-		transform.Find("ActionLabel").GetComponent<TextMesh>().text = (null == installedZig) ? "INSTALL" : "LAUNCH";
+		Init(md.Name, md.Developer, md.Description, (null == installedZig) ? "INSTALL" : "LAUNCH");
 	}
 	
 	public void InitRemote(RemoteZig zig)
@@ -50,6 +56,13 @@ public class ZigItem : MonoBehaviour {
 		installedZig = zig;
 		Init(zig);
 		StartCoroutine(LoadThumbnail(zig.ThumbnailURI));
+	}
+	
+	public void InitScene(SceneZig zig)
+	{
+		Init(zig.Name, zig.Developer, zig.Description, "Launch");
+		transform.Find("Thumbnail").renderer.material = zig.Thumbnail;
+		sceneZig = zig;
 	}
 	
 	IEnumerator LoadThumbnail(string uri)
@@ -113,19 +126,19 @@ public class ZigItem : MonoBehaviour {
 	
 	public IEnumerator Launch()
 	{
+		if (null != sceneZig) {
+			Application.LoadLevel(sceneZig.SceneName);
+			yield break;
+		}
+		
 		if (null == installedZig) yield break;
         //TODO: hack o'mercy
         yield return null;
 		print("Launching zig...");
         OpenNISessionManager.Instance.StopListening();
         OpenNIContext.Instance.UpdateContext = false;
-        //try {
-        //    installedZig.Launch(OpenNIContext.Context, isFullscreen, );
-        //}
-        //finally {
-        //    SessionManager.Instance.StartListening();
-        //}
-        installedZig.Launch(OpenNIContext.Context, delegate(object s, System.EventArgs e) {
+ 
+		installedZig.Launch(OpenNIContext.Context, delegate(object s, System.EventArgs e) {
             cleanupProcessLaunch = true;
             Debug.Log("done with process");
 
@@ -138,25 +151,4 @@ public class ZigItem : MonoBehaviour {
     {
         LoaderLib2.API.Shutdown();
     }
-	
-	void MenuItem_Select()
-	{
-		//if (null == installedZig) {
-		//	StartCoroutine(InstallFrom(zigUri));
-		//} else {
-		//	StartCoroutine(Launch());
-		//}
-		
-		//if (null != remoteZig) {
-		//	zigInfo.Init(remoteZig);
-		//	mst.Set(remoteZig.Metadata.Name, transform.Find("Thumbnail").renderer.material, 
-		//}
-	}
-	
-	void OnGUI()
-	{
-		if (installing) {
-			GUI.HorizontalSlider(new Rect(0, Screen.height - 30, Screen.width, Screen.height - 10), req.progress, 0.0f, 1.0f);
-		}
-	}
 }
