@@ -26,10 +26,16 @@ public class Navigator : MonoBehaviour {
 	}
 	public void NavigateTo(Transform obj)
 	{
-		DeactivateItem(ActiveItem);
-		historyStack.Add(obj);
-		ActivateItem(obj);
+        NavigateTo(obj, true);
 	}
+    public void NavigateTo(Transform obj, bool AddToHistory)
+    {
+        DeactivateItem(ActiveItem);
+        if (AddToHistory) {
+            historyStack.Add(obj);
+        }
+        ActivateItem(obj);
+    }
 	
 	public void NavigateBack()
 	{
@@ -65,6 +71,7 @@ public class Navigator : MonoBehaviour {
 	{
 		if (!obj) return;
 		obj.SendMessage("Navigator_Deactivate", SendMessageOptions.DontRequireReceiver);
+        SendMessage("Navigator_DeactivatedItem", obj, SendMessageOptions.DontRequireReceiver);
 	}
 	
 	void Start()
