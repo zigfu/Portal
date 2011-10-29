@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 
 public class BuildScene {
+    static string[] extraFiles = { "first.wav", "second.wav" };
     static string scene = "Assets/Portal/_Portal.unity";
     static string outputPath = "BuildOutput/Portal";
 	
@@ -28,6 +29,9 @@ public class BuildScene {
 		PlayerSettings.productName = "Portal";
         string res = BuildPipeline.BuildPlayer(new string[] { scene }, getOutputPath("Portal"), BuildTarget.StandaloneWindows, BuildOptions.None);
         Debug.Log("result: " + res);
+        foreach (string filename in extraFiles) {
+            File.Copy(filename, Path.Combine(Path.Combine(outputPath, "bin"), Path.GetFileName(filename)), true);
+        }
     }
 
     private static string getOutputPath(string scene)
