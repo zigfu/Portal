@@ -7,9 +7,13 @@ using System;
 public class DoUpdate : MonoBehaviour {
 
     public float CurrentVersion = 0.3f;
-    public bool UseTestURL = false;
+    public ZiglibInit Initializer = null;
+    private bool UseTestURL = false;
 	// Use this for initialization
 	void Start () {
+        if (Initializer != null) {
+            UseTestURL = Initializer.TestMode;
+        }
         //check for update only when not running in editor
 #if !UNITY_EDITOR
         StartCoroutine(CheckForUpdate());
