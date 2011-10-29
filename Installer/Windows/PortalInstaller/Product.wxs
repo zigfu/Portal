@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="ed31d10e-5933-44a2-833b-a0278cbbc10c" Name="ZigFu Portal" Language="1033" Version="1.0.1.0" Manufacturer="ZigFu" UpgradeCode="97a671a7-ab73-49fe-a237-37b6a331747d">
+	<Product Id="90929a50-93be-476e-bd29-ee4b70ba5b77" Name="ZigFu Portal" Language="1033" Version="1.0.2.0" Manufacturer="ZigFu" UpgradeCode="97a671a7-ab73-49fe-a237-37b6a331747d">
 		<Package InstallerVersion="200" Compressed="yes" Id="*" Description="ZigFu Portal Installer"/>
-
+    <Property Id="PREVIOUSVERSIONINSTALLED" Secure="yes" />
+    <Upgrade Id="97a671a7-ab73-49fe-a237-37b6a331747d">
+      <UpgradeVersion 
+        Minimum="1.0.0.0" 
+        Maximum="1.0.1.0" 
+        IncludeMinimum="yes" 
+        IncludeMaximum="yes"
+        Property="PREVIOUSVERSIONINSTALLED"></UpgradeVersion>
+    </Upgrade>
 		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
 
     <Icon Id="icon.exe" SourceFile="icon.ico"/>
@@ -50,7 +58,10 @@
     <WixVariable Id="WixUILicenseRtf" Value="license.rtf"/>
     <WixVariable Id="WixUIBannerBmp" Value="neonBG.bmp"/>
     <WixVariable Id="WixUIDialogBmp" Value="neonFirstScreen.bmp"/>
-    
+
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallInitialize" />
+    </InstallExecuteSequence>
     
 		<Feature Id="ProductFeature" Title="Portal" Level="1">
 			<ComponentGroupRef Id="AllFiles" />
