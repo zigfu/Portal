@@ -7,7 +7,10 @@ public class SimpleVisualizerSliderThingie : MonoBehaviour {
 	public Color defaultColor;
 	public Color selectedColor;
 	public Color disabledColor;
-	
+
+    public float startPosition = 0.0f;
+    public float stopPosition = 1.0f;
+
 	bool blinking;
 	
 	// Use this for initialization
@@ -55,7 +58,8 @@ public class SimpleVisualizerSliderThingie : MonoBehaviour {
 	public void SetProgress(float progress)
 	{
 		if (blinking) return;
-		target.material.SetFloat("_Cutoff", progress);
+        float shaderProgress = Mathf.Lerp(startPosition, stopPosition, progress);
+		target.material.SetFloat("_Cutoff", shaderProgress);
 		Color c = target.material.color;
 		c.a = progress;
         target.material.color = c;
