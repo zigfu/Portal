@@ -7,12 +7,25 @@ using System;
 public class DoUpdate : MonoBehaviour {
 
     public float CurrentVersion = 0.3f;
+    public string OverrideVersionFile = "test.ver";
     public ZiglibInit Initializer = null;
     private bool UseTestURL = false;
 	// Use this for initialization
 	void Start () {
         if (Initializer != null) {
             UseTestURL = Initializer.TestMode;
+        }
+        if ((null != OverrideVersionFile) && (File.Exists(OverrideVersionFile))) {
+            try {
+                string data = File.ReadAllText(OverrideVersionFile);
+                float version;
+                if (float.TryParse(data.Trim(), out version)) {
+                    print(string.Format("overriding version {0} with version {1} from file {2}", CurrentVersion, version, OverrideVersionFile));
+                    CurrentVersion = version;
+                }
+            }
+            catch (IOException) {
+            }
         }
         //check for update only when not running in editor
 #if !UNITY_EDITOR
