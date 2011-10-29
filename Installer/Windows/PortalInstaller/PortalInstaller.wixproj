@@ -22,6 +22,7 @@
     <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>PortalOut=..\..\..\BuildOutput\Portal</DefineConstants>
+    <SuppressIces>ICE38;ICE64</SuppressIces>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Files.wxs" />
