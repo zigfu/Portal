@@ -3,6 +3,11 @@ using System;
 using System.Collections;
 using OpenNI;
 
+public enum OpenNIResolution {
+    Default,
+    QVGA,
+    VGA
+}
 public class OpenNIContext : MonoBehaviour
 {
     // singleton stuff
@@ -65,6 +70,8 @@ public class OpenNIContext : MonoBehaviour
     public bool LoadFromXML = false;
     public string XMLFilename = ".\\OpenNI.xml";
 	
+    public OpenNIResolution DepthResolution = OpenNIResolution.Default;
+
 	public OpenNIContext()
 	{
 	}
@@ -131,6 +138,24 @@ public class OpenNIContext : MonoBehaviour
 		
 		try {
 			this.Depth = openNode(NodeType.Depth) as DepthGenerator;
+            if ((!LoadFromXML) && (DepthResolution != OpenNIResolution.Default)) {
+                int desiredX = 320;
+                switch (DepthResolution) {
+                    case OpenNIResolution.QVGA:
+                        desiredX = 320;
+                        break;
+                    case OpenNIResolution.VGA:
+                        desiredX = 640;
+                        break;
+                }
+                foreach (var mode in Depth.GetSupportedMapOutputModes()) {
+                    if (mode.XRes == desiredX) {
+                        this.Depth.MapOutputMode = mode;
+                        print(string.Format("set output mode to {0}x{1}", mode.XRes, mode.YRes));
+                        break;
+                    }
+                }
+            }
 		} catch (Exception ex) {
 			error = true;
 			errorMsg = "Error opening depth stream. Please make sure the sensor is connected";
