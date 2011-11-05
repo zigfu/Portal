@@ -37,6 +37,7 @@ public class PushDetector : MonoBehaviour {
 	}
 	
 	bool sent_push;
+	bool sent_clickhold;
 	void Hand_Update(Vector3 pos)
 	{
 		// move slider if hand is out of its bounds (that way it always feels responsive)
@@ -59,21 +60,23 @@ public class PushDetector : MonoBehaviour {
         }
         else // clicked
         {
-            if (ClickProgress < 0.5) {
-                if (IsClick(clickPushTime, ClickPosition, Time.time, pos)) {
-					SendMessage("PushDetector_Click",SendMessageOptions.DontRequireReceiver);
-				}
-				
-				SendMessage("PushDetector_Release", SendMessageOptions.DontRequireReceiver);
-                IsClicked = false;
-				sent_push = false;
-            }
-			else
-			{
-				if (!sent_push && !IsClick(clickPushTime, ClickPosition, Time.time, pos))
+			if (!sent_clickhold) {
+		        if (ClickProgress < 0.5) {
+		            if (IsClick(clickPushTime, ClickPosition, Time.time, pos)) {
+						SendMessage("PushDetector_Click",SendMessageOptions.DontRequireReceiver);
+					}
+					
+					SendMessage("PushDetector_Release", SendMessageOptions.DontRequireReceiver);
+		            IsClicked = false;
+					sent_push = false;
+		        }
+				else
 				{
-					SendMessage("PushDetector_Push", SendMessageOptions.DontRequireReceiver);
-					sent_push = true;
+					if (!sent_push && !IsClick(clickPushTime, ClickPosition, Time.time, pos))
+					{
+						SendMessage("PushDetector_Push", SendMessageOptions.DontRequireReceiver);
+						sent_push = true;
+					}
 				}
 			}
         }
@@ -83,6 +86,13 @@ public class PushDetector : MonoBehaviour {
 			float delta = initialValue - ClickProgress;
             pushFader.MoveTo(pos, ClickProgress + (delta * driftSpeed));
 		}	
+	}
+	
+	void SteadyDetector_Steady()
+	{
+		if (IsClicked && Time.time <= clickPushTime + clickTimeFrame) {
+			SendMessage("PushDetector_ClickHold", SendMessageOptions.DontRequireReceiver);
+		}
 	}
 	
 	void Hand_Destroy()
@@ -106,5 +116,27 @@ public class PushDetector : MonoBehaviour {
 		GUILayout.Toggle(IsClicked, "PUSH");
 	}
 	
-
+	public bool verbose = false;
+	void PushDetector_Push()
+	{
+		if (verbose) {
+			print("PushDetector - Push");
+			print ("PushTime: " + clickPushTime + " Now: " + Time.time);
+		}
+	}
+	
+	void PushDetector_Release()
+	{
+		if (verbose) print("PushDetector - Release");
+	}
+	
+	void PushDetector_Click()
+	{
+		if (verbose) print("PushDetector - Click");
+	}
+	
+	void PushDetector_ClickHold()
+	{
+		if (verbose) print("PushDetector - ClickHold");
+	}
 }
