@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(HandPointControl))]
 public class Fader : MonoBehaviour {
-	public Vector3 direction = Vector3.right;
+	public Vector3 direction = Vector3.down;
 	public float size = 200;
     public float initialValue = 0.5f;
 

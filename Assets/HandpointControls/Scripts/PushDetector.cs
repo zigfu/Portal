@@ -8,7 +8,7 @@ public class PushDetector : MonoBehaviour {
 	public float driftSpeed = 0.05f;
 	
 	public float clickTimeFrame = 1.0f;
-    public float clickMaxDistance = 100; //??
+    public float clickMaxDistance = 100;
 
     public float clickPushTime { get; private set; }
 	public bool IsClicked { get; private set; }
@@ -55,28 +55,25 @@ public class PushDetector : MonoBehaviour {
 				ClickPosition = pos;
                 IsClicked = true;
 				clickPushTime = Time.time;
-				//SendMessage("PushDetector_Push", SendMessageOptions.DontRequireReceiver);
             }
         }
         else // clicked
         {
-			if (!sent_clickhold) {
-		        if (ClickProgress < 0.5) {
-		            if (IsClick(clickPushTime, ClickPosition, Time.time, pos)) {
-						SendMessage("PushDetector_Click",SendMessageOptions.DontRequireReceiver);
-					}
-					
-					SendMessage("PushDetector_Release", SendMessageOptions.DontRequireReceiver);
-		            IsClicked = false;
-					sent_push = false;
-		        }
-				else
-				{
-					if (!sent_push && !IsClick(clickPushTime, ClickPosition, Time.time, pos))
-					{
-						SendMessage("PushDetector_Push", SendMessageOptions.DontRequireReceiver);
-						sent_push = true;
-					}
+			
+	        if (ClickProgress < 0.5) {
+	            if (IsClick(clickPushTime, ClickPosition, Time.time, pos) && !sent_clickhold) {
+					SendMessage("PushDetector_Click",SendMessageOptions.DontRequireReceiver);
+				}
+				
+				SendReleaseMaybe();
+	            IsClicked = false;
+				sent_clickhold = false;
+	        }
+			else
+			{
+				if (!sent_push && !sent_clickhold && !IsClick(clickPushTime, ClickPosition, Time.time, pos)) {
+					SendMessage("PushDetector_Push", SendMessageOptions.DontRequireReceiver);
+					sent_push = true;
 				}
 			}
         }
@@ -90,8 +87,9 @@ public class PushDetector : MonoBehaviour {
 	
 	void SteadyDetector_Steady()
 	{
-		if (IsClicked && Time.time <= clickPushTime + clickTimeFrame) {
+		if (IsClicked && Time.time <= clickPushTime + clickTimeFrame && !sent_push) {
 			SendMessage("PushDetector_ClickHold", SendMessageOptions.DontRequireReceiver);
+			sent_clickhold = true;
 		}
 	}
 	
@@ -109,7 +107,15 @@ public class PushDetector : MonoBehaviour {
         delta.z = 0;
         return ((t2 - t1 < clickTimeFrame) && (delta.magnitude < clickMaxDistance));
     }
-
+	
+	void SendReleaseMaybe()
+	{
+		if (IsClicked) {	
+			SendMessage("PushDetector_Release", SendMessageOptions.DontRequireReceiver);
+			sent_push = false;
+		}
+	}
+	
 	void SessionManager_Visualize()
 	{
 		GUILayout.Label("- PushDetector");
@@ -121,7 +127,6 @@ public class PushDetector : MonoBehaviour {
 	{
 		if (verbose) {
 			print("PushDetector - Push");
-			print ("PushTime: " + clickPushTime + " Now: " + Time.time);
 		}
 	}
 	

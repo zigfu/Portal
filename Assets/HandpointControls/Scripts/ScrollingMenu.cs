@@ -7,7 +7,8 @@ public class ScrollingMenu : MonoBehaviour
 {
     public Fader fader;
     public Vector3 direction = Vector3.down;
-    public int WindowSize;
+    public int WindowSize = 1;
+	public float hysteresis = 0.2f;
     public float damping = 5.0f;
     public float scrollRegionSize = 0.15f;
     public bool RepositionBasedOnBounds = false;
@@ -138,6 +139,7 @@ public class ScrollingMenu : MonoBehaviour
 
         // init the itemselector
         selector = gameObject.AddComponent<ItemSelector>();
+		selector.hysterisis = hysteresis;
         selector.fader = fader;
     
         // push detector, if we need one
