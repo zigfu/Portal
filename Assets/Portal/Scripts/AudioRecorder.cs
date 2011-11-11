@@ -89,7 +89,19 @@ public class AudioRecorder : MonoBehaviour {
 		};
 		WWW req = new WWW("https://www.google.com/speech-api/v1/recognize?client=chromium&lang=en-US", flacData.GetBuffer(), headers);
 		yield return req;
-		print(req.text);
+		
+		// output format:
+		// {"status":0,"id":"eb5fc5394dcfabe632ffbdcae03da538-1","hypotheses":[{"utterance":"testing testing testing","confidence":0.9603586}]}
+		
+		Hashtable result = JSON.JsonDecode(req.text) as Hashtable;
+		int resultCode = (int)(double)result["status"];
+		if (0 == resultCode) {
+			ArrayList hypotheses = result["hypotheses"] as ArrayList;
+			string txt = (string)(hypotheses[0] as Hashtable)["utterance"];
+			print("SpeechToText: " + txt);
+		} else {
+			print("SpeechToText error: " + resultCode);
+		}
 	}
 	
 	void waveInStream_DataAvailable(object sender, WaveInEventArgs e)
