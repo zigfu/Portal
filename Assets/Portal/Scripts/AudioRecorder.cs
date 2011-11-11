@@ -17,7 +17,7 @@ public class AudioRecorder : MonoBehaviour {
 	bool recording;
 	int totalBytesWritten;
 	
-	public int sampleRate = 22500;
+	public int sampleRate = 22050;
 	
 	void Start()
 	{
